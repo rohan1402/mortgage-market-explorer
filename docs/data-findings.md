@@ -7,6 +7,9 @@
 
 ## 1. The load
 
+> **Rebuilt 10/10 after D10, D16 and D17:** `application` now has **1,537,805 rows** (purchased loans dropped) at 94 bytes/row, 138 MB, and the database is **211 MB**. Both analysis scripts were re-run on the new schema and every finding in §2–§4 came out the same. The table below describes the first load.
+
+
 | | Value |
 |---|---|
 | Rows downloaded | 1,739,859 (2021: 707,685 · 2022: 414,459 · 2023: 293,775 · 2024: 323,940) |
