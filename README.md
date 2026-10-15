@@ -9,7 +9,7 @@ DBMS course project, Fall 2026: Alex Goferman, Rohan Pant, Junemo Moon, Juhun Ki
 <!-- status:start -->
 _Updated 2026-10-15 by Rohan. When you finish or start a task, update this section in the same commit._
 
-**Where we are:** the data and schema are done. The mockups are a first draft, and the project page and pitch are not started. We pitch **Thu 10/22, 6–9 PM**, and the project page is due **Fri 10/23, end of day** (grading starts 10/24). The blocker is **D1**, which investigations we build: the team picks them at the next meeting (date TBD).
+**Where we are:** the data and schema are done. The mockups are in progress, and the project page and pitch are not started. We pitch **Thu 10/22, 6–9 PM**, and the project page is due **Fri 10/23, end of day** (grading starts 10/24). The blocker is **D1**, which investigations we build: the team picks them at the next meeting (date TBD).
 
 ### Deadlines
 | Due | Deliverable | Pts | Owner | Status |
@@ -17,8 +17,8 @@ _Updated 2026-10-15 by Rohan. When you finish or start a task, update this secti
 | Wed 9/30 | Proposal | 3 | Team | ✅ Submitted |
 | **Thu 10/22, 6–9 PM** (our slot) | Midterm pitch, about 15 min, pitched like to investors: our idea, how we differ, mockups. No working app needed. | 10 | TBD | ⬜ Not started |
 | **Fri 10/23, end of day** | Project page live, with the proposal, ER diagram, schema, data plan and mockups | 4 | TBD | ⬜ Not started |
-| **Fri 10/23, end of day** | ER diagram, schema and data plan (on the page) | 3 | TBD (Juhun offered) | 🟡 Written in the repo: [ERD](docs/erd.md), [schema](db/schema.sql), [data plan](docs/data-plan.md). Not on the page yet. |
-| **Fri 10/23, end of day** | Mockups, at least one screen per user type (on the page) | 4 | Junemo (draft) | 🟡 First draft shared by email 10/13. Not in the repo yet. |
+| **Fri 10/23, end of day** | ER diagram, schema and data plan (on the page) | 3 | TBD | 🟡 Written in the repo: [ERD](docs/erd.md), [schema](db/schema.sql), [data plan](docs/data-plan.md). Not on the page yet. |
+| **Fri 10/23, end of day** | Mockups, at least one screen per user type (on the page) | 4 | TBD | 🟡 In progress |
 | Wed 12/9, 11:59 PM | Live app + sample sign-ins (3 of the 15 pts for ≥1M rows) | 15 | TBD | 🟡 1.54M rows load locally. App not started (stack D4, host D5 open). |
 | Wed 12/9, 11:59 PM | User guides | 4 | TBD | ⬜ Not started |
 | Wed 12/9, 11:59 PM | Documented code + project page | 8 | TBD | ⬜ Not started |
@@ -28,7 +28,7 @@ _Updated 2026-10-15 by Rohan. When you finish or start a task, update this secti
 ✅ done · 🟡 in progress · ⬜ not started. Late = −5 points. Owners are open decision D6. Source: professor's Canvas notes of 10/9 and 10/12.
 
 ### Done so far (newest first, keep about 5)
-- **10/15** Repo on GitHub, with one-command setup. Alex's four questions added to D1 as option D.
+- **10/15** Repo on GitHub, with one-command setup.
 - **10/13** Team meeting: agreed to D2, D3, D7, D9, D10, D16, D17, D19, D21 ([notes](docs/meetings/2026-10-13.md)).
 - **10/10** NJ HMDA 2021–2024 loaded: 1,537,805 applications, 211 MB, rebuilds from empty in about a minute.
 - **10/10** Schema matches every agreed decision. First findings on the real data: [data-findings.md](docs/data-findings.md).
@@ -37,7 +37,7 @@ _Updated 2026-10-15 by Rohan. When you finish or start a task, update this secti
 1. Next meeting: pick the investigations (D1) and owners (D6). The page, mockups and pitch all build on D1.
 2. Check where the project page must live. The 10/9 note talks about editing "your project page" and points to example pages on the course's Canvas Pages, but we chose GitHub Pages (D7).
 3. Build the project page and put the proposal, ERD, schema, data plan and mockups on it.
-4. Add Junemo's mockup to the repo and cover both user types (homebuyer, analyst).
+4. Mockups: at least one screen per user type (homebuyer, analyst).
 5. Write and rehearse the pitch.
 
 Still open: D1, D4, D5, D6, D8, D11–D15, D18, D20 ([open decisions](docs/open-decisions.md)).

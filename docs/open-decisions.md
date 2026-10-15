@@ -28,9 +28,6 @@
   - The stretch (neighborhood lending gap) is the most compelling result. Lakeland Bank's ratio to peers went 0.27 → 0.47 → 1.10 from 2021 to 2023, around its 2022 DOJ settlement. Consider promoting it to core, or using it as the pitch closer.
   - Denial *reasons* barely differ by county, so professor's example #4 should stay a drill-down inside Investigation 2, not its own investigation.
 - **10/13:** each member is looking into which investigations to build. Finalize at the next meeting.
-- **Option D (Alex, 10/15):** four questions. (1) Where are loans near my target amount common, and which lenders make them? (2) How do nearby counties differ? (3) Where did activity change unusually vs. past years (year-over-year change with `LAG()`, flag counties more than 2 SD from the average county)? (4) Where are denials higher, and what reasons and lenders explain it?
-  - Maps almost one-to-one onto option A: (1) = A loan like mine, (2) = Market vs. its neighbors, (3) = What changed?, (4) = the denial-reasons drill-down (D20).
-  - Suggested changes: add lender pricing (rate + costs) to (1), compare by loan purpose in (2) and (4) (D19), point (4) at lenders and loan purpose since reasons barely differ by county, handle mergers in (3) (D17), keep the lending gap as stretch or pitch closer.
 
 #### D4. Tech stack
 - **Backend:** Flask / FastAPI / Django / Streamlit
