@@ -9,13 +9,13 @@ DBMS course project, Fall 2026: Alex Goferman, Rohan Pant, Junemo Moon, Juhun Ki
 <!-- status:start -->
 _Updated 2026-10-15 by Rohan. When you finish or start a task, update this section in the same commit._
 
-**Where we are:** the data and schema are done. The mockups are a first draft, and the project page and pitch are not started. The project page is due **Fri 10/23, end of day** (grading starts 10/24). The blocker is **D1**, which investigations we build: the team picks them at the next meeting (date TBD).
+**Where we are:** the data and schema are done. The mockups are a first draft, and the project page and pitch are not started. We pitch **Thu 10/22, 6–9 PM**, and the project page is due **Fri 10/23, end of day** (grading starts 10/24). The blocker is **D1**, which investigations we build: the team picks them at the next meeting (date TBD).
 
 ### Deadlines
 | Due | Deliverable | Pts | Owner | Status |
 |---|---|---|---|---|
 | Wed 9/30 | Proposal | 3 | Team | ✅ Submitted |
-| Thu 10/22 6–9 PM or Fri 10/23 4–6 PM (our signed-up slot) | Midterm pitch, about 15 min, pitched like to investors: our idea, how we differ, mockups. No working app needed. | 10 | TBD | ⬜ Not started |
+| **Thu 10/22, 6–9 PM** (our slot) | Midterm pitch, about 15 min, pitched like to investors: our idea, how we differ, mockups. No working app needed. | 10 | TBD | ⬜ Not started |
 | **Fri 10/23, end of day** | Project page live, with the proposal, ER diagram, schema, data plan and mockups | 4 | TBD | ⬜ Not started |
 | **Fri 10/23, end of day** | ER diagram, schema and data plan (on the page) | 3 | TBD (Juhun offered) | 🟡 Written in the repo: [ERD](docs/erd.md), [schema](db/schema.sql), [data plan](docs/data-plan.md). Not on the page yet. |
 | **Fri 10/23, end of day** | Mockups, at least one screen per user type (on the page) | 4 | Junemo (draft) | 🟡 First draft shared by email 10/13. Not in the repo yet. |
