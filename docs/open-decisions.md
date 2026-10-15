@@ -58,7 +58,7 @@
 - **Recommendation:** one GitHub repo (this folder), `main` protected, each person works on a branch and opens a PR; one other person reviews. Everyone uses `CLAUDE.md` so AI-generated code follows the same conventions.
 - **Also decide:** communication channel (group chat?), and a fixed weekly meeting slot.
 
-### 🟡 Decide before the midterm (10/22)
+### 🟡 Decide before the midterm (project page due 10/23)
 
 #### D11. Pitch structure and who presents what
 - Proposed flow (≤ 12 min + questions): the problem (a real homebuyer and a real analyst) → what exists and why it's not enough → live walkthrough of Investigation 1 via mockups → the data and the path to 1M rows → what we expect to be hard.

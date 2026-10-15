@@ -1,0 +1,30 @@
+# Keeps the "Latest activity" list in README.md current: runs on every push to main.
+name: README latest activity
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: readme-activity
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 50
+      - name: Refresh the list
+        run: bash scripts/latest-activity.sh --write
+      - name: Commit it if it changed
+        run: |
+          git diff --quiet README.md && exit 0
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Update latest activity in README [skip ci]" README.md
+          git pull --rebase origin main
+          git push origin HEAD:main

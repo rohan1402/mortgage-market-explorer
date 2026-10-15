@@ -5,22 +5,26 @@
 
 **Course:** Data Management for Advanced Data Science Applications, Fall 2026
 **Team:** Alex Goferman, Rohan Pant, Junemo Moon, Juhun Kim
-**Last updated:** 2026-10-10
+**Last updated:** 2026-10-15
 
 ---
 
 ## 1. Deadlines
 
-| Date | What | Points | Status |
-|---|---|---|---|
-| Wed 9/30 | Proposal | 3 | Submitted |
-| **Thu 10/22, 6:00 PM** | Project page (4) + ER diagram, schema and data plan on the page (3) + mockups (4) | 11 | In progress |
-| Thu 10/22, in class | Midterm pitch, up to 15 min | 10 | Not started |
-| Wed 12/9, 11:59 PM | Live app + sample sign-ins (15, of which 3 for ≥1M rows), user guides (4), documented code + project page (8) | 27 | Not started |
-| Thu 12/10, in class | Final presentation, up to 15 min | 10 | Not started |
-| Before 12/10 | Bonus: real bugs found in other teams' apps | +2 | — |
+Progress on each one is tracked in the **Project status** section of [`README.md`](README.md).
 
-Late = −5 points.
+| Date | What | Points |
+|---|---|---|
+| Wed 9/30 | Proposal | 3 |
+| Thu 10/22 6–9 PM or Fri 10/23 4–6 PM (our signed-up slot) | Midterm pitch, about 15 min of a 20-min slot. No working app or data needed. | 10 |
+| **Fri 10/23, end of day** | Project page live (4), with the proposal, ER diagram + schema + data plan (3) and mockups, at least one screen per user type (4). Grading starts 10/24. | 11 |
+| Wed 12/9, 11:59 PM | Live app + sample sign-ins (15, of which 3 for ≥1M rows), user guides (4), documented code + project page (8) | 27 |
+| Thu 12/10, in class | Final presentation, up to 15 min | 10 |
+| Before 12/10 | Bonus: real bugs found in other teams' apps | +2 |
+
+Late = −5 points. Midterm dates from the professor's Canvas notes of 10/9 and 10/12.
+
+---
 
 ## 2. Problem
 
@@ -89,7 +93,8 @@ Recommended set (covers all five of the professor's examples inside three workfl
 | Fri 10/16 | Data loaded (at least one year), schema frozen, prototype of Investigation 1 in front of the team |
 | Mon 10/19 | Mockups for every user type, project page draft complete |
 | Tue 10/20 | Pitch rehearsal (timed, ≤ 12 min to leave room for questions) |
-| **Thu 10/22, 6 PM** | Everything submitted |
+| Thu 10/22 or Fri 10/23 | Pitch, in our signed-up slot |
+| **Fri 10/23, end of day** | Project page live with everything on it (grading starts 10/24) |
 
 ## 10. Repo map
 
@@ -104,4 +109,4 @@ Recommended set (covers all five of the professor's examples inside three workfl
 | `docs/decisions.md` | Decisions made: options, pick, why; things that didn't work | Design alternative, "Engineering difficulties" |
 | `docs/query-log.md` | Each real app query with EXPLAIN ANALYZE at 10k/100k/1M | "Behavior at scale" (final) |
 | `CLAUDE.md` | Brief for AI coding tools | Keeps code consistent across four people |
-| `README.md` | Setup and rebuild instructions | Codebase grade |
+| `README.md` | Project status and deadlines, setup | Codebase grade |

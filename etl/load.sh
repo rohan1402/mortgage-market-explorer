@@ -7,7 +7,7 @@
 #   SAMPLE=0.065  etl/load.sh        # ≈100k
 #
 # Needs only bash and psql. Connection comes from DATABASE_URL (default: local db "mme").
-# Inputs (data/raw/, git-ignored; see etl/README.md for download URLs):
+# Inputs (data/raw/, git-ignored; etl/download.sh fetches them, URLs in etl/README.md):
 #   hmda_nj_<YEAR>.csv           HMDA Data Browser CSV, NJ, all outcomes
 #   filers_nj_<YEAR>.json        lender names (optional)
 #   county_adjacency2023.txt     Census county adjacency file (optional)
