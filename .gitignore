@@ -11,3 +11,5 @@ data/raw/
 # small reference data we maintain by hand
 !etl/lender_successor.csv
 *.zip
+# personal Claude Code settings
+.claude/settings.local.json
