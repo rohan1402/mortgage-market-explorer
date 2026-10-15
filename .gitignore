@@ -1,0 +1,13 @@
+.env
+__pycache__/
+*.pyc
+.venv/
+venv/
+node_modules/
+.DS_Store
+# raw HMDA downloads are large; the loader fetches them
+data/raw/
+*.csv
+# small reference data we maintain by hand
+!etl/lender_successor.csv
+*.zip

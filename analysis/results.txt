@@ -1,0 +1,406 @@
+SET
+CREATE VIEW
+Timing is off.
+==================================================================
+A. DATA PROFILE
+==================================================================
+-- A1 rows by year and outcome
+ year |                    outcome                    |  rows  | pct_of_year 
+------+-----------------------------------------------+--------+-------------
+ 2021 | Loan originated                               | 389069 |        62.1
+ 2021 | Application approved but not accepted         |  14597 |         2.3
+ 2021 | Application denied                            |  82009 |        13.1
+ 2021 | Application withdrawn by applicant            |  98996 |        15.8
+ 2021 | File closed for incompleteness                |  41143 |         6.6
+ 2021 | Preapproval request denied                    |     70 |         0.0
+ 2021 | Preapproval request approved but not accepted |    654 |         0.1
+ 2022 | Loan originated                               | 202163 |        55.7
+ 2022 | Application approved but not accepted         |   8739 |         2.4
+ 2022 | Application denied                            |  67041 |        18.5
+ 2022 | Application withdrawn by applicant            |  63417 |        17.5
+ 2022 | File closed for incompleteness                |  21088 |         5.8
+ 2022 | Preapproval request denied                    |     73 |         0.0
+ 2022 | Preapproval request approved but not accepted |    624 |         0.2
+ 2023 | Loan originated                               | 138396 |        53.2
+ 2023 | Application approved but not accepted         |   7087 |         2.7
+ 2023 | Application denied                            |  55431 |        21.3
+ 2023 | Application withdrawn by applicant            |  42095 |        16.2
+ 2023 | File closed for incompleteness                |  16637 |         6.4
+ 2023 | Preapproval request denied                    |    106 |         0.0
+ 2023 | Preapproval request approved but not accepted |    209 |         0.1
+ 2024 | Loan originated                               | 155969 |        54.1
+ 2024 | Application approved but not accepted         |   9120 |         3.2
+ 2024 | Application denied                            |  58101 |        20.2
+ 2024 | Application withdrawn by applicant            |  45388 |        15.8
+ 2024 | File closed for incompleteness                |  19093 |         6.6
+ 2024 | Preapproval request denied                    |     70 |         0.0
+ 2024 | Preapproval request approved but not accepted |    420 |         0.1
+
+-- A2 row totals under different scope choices (1M-row safety, decision D3)
+ all_rows | excl_purchased | applications_only | years_2022_2024_all | years_2022_2024_excl_purchased 
+----------+----------------+-------------------+---------------------+--------------------------------
+  1537805 |        1537805 |           1535579 |              911267 |                         911267
+
+-- A3 loan purpose mix by year (applications)
+ year |       purpose        | applications | pct  
+------+----------------------+--------------+------
+ 2021 | Home purchase        |       188123 | 30.1
+ 2021 | Home improvement     |        32162 |  5.1
+ 2021 | Other purpose        |        21593 |  3.5
+ 2021 | Not applicable       |           76 |  0.0
+ 2021 | Refinancing          |       265094 | 42.4
+ 2021 | Cash-out refinancing |       118766 | 19.0
+ 2022 | Home purchase        |       155788 | 43.0
+ 2022 | Home improvement     |        45521 | 12.6
+ 2022 | Other purpose        |        35858 |  9.9
+ 2022 | Not applicable       |           35 |  0.0
+ 2022 | Refinancing          |        52626 | 14.5
+ 2022 | Cash-out refinancing |        72620 | 20.0
+ 2023 | Home purchase        |       119589 | 46.1
+ 2023 | Home improvement     |        39473 | 15.2
+ 2023 | Other purpose        |        39465 | 15.2
+ 2023 | Not applicable       |           27 |  0.0
+ 2023 | Refinancing          |        21675 |  8.3
+ 2023 | Cash-out refinancing |        39417 | 15.2
+ 2024 | Home purchase        |       120459 | 41.9
+ 2024 | Home improvement     |        40993 | 14.2
+ 2024 | Other purpose        |        43866 | 15.2
+ 2024 | Not applicable       |          158 |  0.1
+ 2024 | Refinancing          |        33498 | 11.6
+ 2024 | Cash-out refinancing |        48697 | 16.9
+
+-- A4 pricing fields filled in, originated loans (Investigation 1 needs these)
+ year | originations | pct_with_rate | pct_with_total_costs | pct_with_points | pct_with_dti 
+------+--------------+---------------+----------------------+-----------------+--------------
+ 2021 |       389069 |          98.9 |                 88.5 |            31.6 |         92.8
+ 2022 |       202163 |          97.5 |                 73.1 |            37.9 |         93.9
+ 2023 |       138396 |          97.4 |                 67.5 |            36.1 |         92.7
+ 2024 |       155969 |          97.7 |                 66.6 |            33.0 |         90.3
+
+-- A5 average bytes per application row (size budget)
+  rows   |  heap  | bytes_per_row 
+---------+--------+---------------
+ 1537805 | 138 MB |          93.8
+
+-- A6 lender name coverage
+ lenders | with_name 
+---------+-----------
+    1269 |      1269
+
+==================================================================
+B. INVESTIGATION 1: A LOAN LIKE MINE
+==================================================================
+-- B1 2024 home purchase originations (owner-occupied, first lien): share in $400k-$500k, county vs state
+   county   | purchases | pct_400_500k | state_pct | ratio_to_state | median_purchase_loan 
+------------+-----------+--------------+-----------+----------------+----------------------
+ Middlesex  |      5398 |         26.4 |      18.0 |           1.47 |               455000
+ Passaic    |      2695 |         25.8 |      18.0 |           1.43 |               475000
+ Union      |      3306 |         23.0 |      18.0 |           1.28 |               525000
+ Sussex     |      1575 |         21.7 |      18.0 |           1.21 |               355000
+ Somerset   |      2754 |         21.2 |      18.0 |           1.18 |               495000
+ Morris     |      4087 |         20.7 |      18.0 |           1.15 |               515000
+ Warren     |      1070 |         19.3 |      18.0 |           1.07 |               335000
+ Hunterdon  |      1214 |         19.2 |      18.0 |           1.07 |               435000
+ Ocean      |      5444 |         18.9 |      18.0 |           1.05 |               365000
+ Monmouth   |      5292 |         18.6 |      18.0 |           1.03 |               495000
+ Essex      |      4404 |         18.6 |      18.0 |           1.03 |               555000
+ Mercer     |      2663 |         17.8 |      18.0 |           0.99 |               385000
+ Burlington |      4539 |         16.3 |      18.0 |           0.91 |               335000
+ Cape May   |       617 |         15.9 |      18.0 |           0.88 |               365000
+ Bergen     |      5996 |         15.4 |      18.0 |           0.86 |               565000
+ Hudson     |      3436 |         14.0 |      18.0 |           0.78 |               560000
+ Gloucester |      2968 |         12.9 |      18.0 |           0.72 |               305000
+ Atlantic   |      2092 |         10.9 |      18.0 |           0.60 |               285000
+ Camden     |      4312 |         10.7 |      18.0 |           0.59 |               295000
+ Cumberland |      1112 |          6.1 |      18.0 |           0.34 |               245000
+ Salem      |       636 |          3.9 |      18.0 |           0.22 |               245000
+
+-- B2 jumbo (non-conforming) share of 2024 purchase originations, and where the limit falls
+   county   | purchases | pct_jumbo | largest_conforming_seen | smallest_jumbo_seen 
+------------+-----------+-----------+-------------------------+---------------------
+ Cape May   |      1985 |      23.7 |                  985000 |              405000
+ Mercer     |      3335 |       6.8 |                  765000 |              405000
+ Essex      |      5391 |       6.3 |                 1365000 |              645000
+ Bergen     |      6825 |       6.1 |                 1505000 |              605000
+ Monmouth   |      6301 |       5.3 |                 1475000 |              595000
+ Union      |      3933 |       4.3 |                 1285000 |              605000
+ Atlantic   |      2939 |       4.1 |                  805000 |              395000
+ Morris     |      4409 |       4.0 |                 1145000 |              615000
+ Hudson     |      4213 |       3.9 |                 1765000 |              705000
+ Ocean      |      7230 |       3.5 |                 2005000 |              655000
+ Somerset   |      3076 |       3.4 |                 1145000 |              675000
+ Burlington |      5277 |       1.5 |                  765000 |              395000
+ Camden     |      5206 |       1.2 |                 1015000 |              765000
+ Salem      |       795 |       0.9 |                  755000 |              505000
+ Hunterdon  |      1327 |       0.9 |                 1145000 |             1005000
+ Middlesex  |      6196 |       0.6 |                 1145000 |              755000
+ Gloucester |      3483 |       0.5 |                  765000 |              705000
+ Passaic    |      3148 |       0.4 |                 1145000 |             1165000
+ Warren     |      1212 |       0.4 |                  765000 |              785000
+ Sussex     |      1774 |       0.3 |                 1145000 |             1205000
+ Cumberland |      1446 |       0.1 |                  765000 |              805000
+
+-- B3 pricing comparability: per county, lenders with >= 30 similar loans and the spread of their medians
+   county   | similar_loans | lenders_30plus | lowest_lender_median_rate | highest_lender_median_rate | lowest_median_costs | highest_median_costs 
+------------+---------------+----------------+---------------------------+----------------------------+---------------------+----------------------
+ Ocean      |           782 |              8 |                     6.125 |                      6.999 |                4789 |                 9434
+ Bergen     |           773 |              7 |                     6.500 |                      6.850 |                5066 |                10705
+ Morris     |           691 |              5 |                     6.499 |                      6.950 |                5554 |                 9466
+ Monmouth   |           830 |              4 |                     6.575 |                      6.950 |                5385 |                 9372
+ Passaic    |           497 |              4 |                     6.500 |                      6.788 |                5629 |                11362
+ Middlesex  |          1074 |              4 |                     6.500 |                      6.875 |                6755 |                11175
+ Essex      |           513 |              3 |                     6.588 |                      6.875 |                5618 |                10047
+ Hudson     |           407 |              2 |                     6.625 |                      6.625 |                5791 |                 7417
+ Union      |           538 |              2 |                     6.506 |                      6.825 |                5985 |                11925
+ Somerset   |           448 |              2 |                     6.563 |                      6.624 |                7166 |                10646
+ Burlington |           508 |              1 |                     6.500 |                      6.500 |                5853 |                 5853
+ Camden     |           317 |              1 |                     6.933 |                      6.933 |                6930 |                 6930
+ Sussex     |           191 |              1 |                     6.875 |                      6.875 |                7426 |                 7426
+ Warren     |           133 |              0 |                           |                            |                     |                     
+ Cape May   |            57 |              0 |                           |                            |                     |                     
+ Cumberland |            21 |              0 |                           |                            |                     |                     
+ Gloucester |           240 |              0 |                           |                            |                     |                     
+ Hunterdon  |           193 |              0 |                           |                            |                     |                     
+ Mercer     |           354 |              0 |                           |                            |                     |                     
+ Salem      |            11 |              0 |                           |                            |                     |                     
+ Atlantic   |           146 |              0 |                           |                            |                     |                     
+
+-- B4 example: Middlesex, lenders with >= 30 similar 2024 loans
+             lender             | similar_loans | median_rate | median_total_costs | pct_paid_points 
+--------------------------------+---------------+-------------+--------------------+-----------------
+ ROCKET MORTGAGE, LLC           |            67 |         6.5 |               6755 |            38.8
+ UNITED WHOLESALE MORTGAGE, LLC |           110 |       6.624 |            11174.5 |            20.9
+ CROSSCOUNTRY MORTGAGE, LLC     |            89 |       6.625 |               7954 |            47.2
+ MOVEMENT MORTGAGE, LLC         |            34 |       6.875 |            10056.5 |            70.6
+
+==================================================================
+C. INVESTIGATION 2: MARKET VS. ITS NEIGHBORS
+==================================================================
+-- C1 county profile, 2024
+SELECT 21
+   county   | applications | denial_rate | withdrawal_rate | fha_share_purchase | refi_share | median_originated 
+------------+--------------+-------------+-----------------+--------------------+------------+-------------------
+ Passaic    |        12365 |        30.6 |            16.6 |               21.2 |       28.8 |            365000
+ Essex      |        21158 |        30.0 |            17.9 |               20.1 |       31.2 |            435000
+ Union      |        14895 |        28.6 |            15.7 |               17.1 |       29.4 |            405000
+ Atlantic   |        10472 |        28.4 |            15.6 |               15.2 |       28.2 |            225000
+ Middlesex  |        23449 |        27.5 |            16.1 |               10.8 |       28.1 |            335000
+ Bergen     |        25757 |        27.4 |            16.2 |                7.6 |       25.6 |            405000
+ Hudson     |        12611 |        27.3 |            19.3 |                6.6 |       23.6 |            485000
+ Cumberland |         4595 |        27.2 |            14.5 |               32.8 |       29.6 |            195000
+ Warren     |         4400 |        27.1 |            15.9 |               19.5 |       26.1 |            235000
+ Camden     |        19026 |        26.1 |            15.3 |               21.9 |       32.1 |            205000
+ Sussex     |         6820 |        25.7 |            17.2 |               19.1 |       29.2 |            255000
+ Burlington |        19031 |        25.0 |            14.6 |               15.2 |       31.7 |            235000
+ Monmouth   |        23501 |        24.4 |            15.0 |                6.4 |       28.1 |            345000
+ Gloucester |        12676 |        24.4 |            14.8 |               19.9 |       30.8 |            215000
+ Salem      |         2606 |        24.2 |            15.2 |               24.3 |       29.1 |            185000
+ Ocean      |        25996 |        23.9 |            14.3 |                9.9 |       29.1 |            275000
+ Mercer     |        11386 |        23.7 |            16.2 |               10.6 |       29.0 |            255000
+ Somerset   |        10506 |        23.4 |            15.4 |                7.2 |       27.2 |            355000
+ Hunterdon  |         4598 |        22.7 |            14.2 |                7.7 |       26.2 |            305000
+ Morris     |        15912 |        22.4 |            15.8 |                8.1 |       26.2 |            365000
+ Cape May   |         5911 |        22.0 |            13.9 |                3.8 |       25.5 |            345000
+
+-- C2 biggest gaps between neighboring NJ counties, 2024 (percentage points)
+  county   |  neighbor  | denial_a | denial_b | denial_gap | fha_gap | median_loan_gap 
+-----------+------------+----------+----------+------------+---------+-----------------
+ Morris    | Passaic    |     22.4 |     30.6 |       -8.2 |   -13.1 |               0
+ Essex     | Morris     |     30.0 |     22.4 |        7.6 |    12.0 |           70000
+ Atlantic  | Cape May   |     28.4 |     22.0 |        6.4 |    11.4 |         -120000
+ Morris    | Union      |     22.4 |     28.6 |       -6.2 |    -9.0 |          -40000
+ Cape May  | Cumberland |     22.0 |     27.2 |       -5.2 |   -29.0 |          150000
+ Somerset  | Union      |     23.4 |     28.6 |       -5.2 |    -9.9 |          -50000
+ Passaic   | Sussex     |     30.6 |     25.7 |        4.9 |     2.1 |          110000
+ Morris    | Warren     |     22.4 |     27.1 |       -4.7 |   -11.4 |          130000
+ Atlantic  | Ocean      |     28.4 |     23.9 |        4.5 |     5.3 |          -50000
+ Hunterdon | Warren     |     22.7 |     27.1 |       -4.4 |   -11.8 |           70000
+ Middlesex | Somerset   |     27.5 |     23.4 |        4.1 |     3.6 |          -20000
+ Atlantic  | Gloucester |     28.4 |     24.4 |        4.0 |    -4.7 |           10000
+ Mercer    | Middlesex  |     23.7 |     27.5 |       -3.8 |    -0.2 |          -80000
+ Atlantic  | Burlington |     28.4 |     25.0 |        3.4 |     0.0 |          -10000
+ Morris    | Sussex     |     22.4 |     25.7 |       -3.3 |   -11.0 |          110000
+
+-- C3 denial reasons: share of 2024 denials citing each reason, top-denial counties vs state
+ county  |                     reason                     | denials | pct_of_denials | state_pct 
+---------+------------------------------------------------+---------+----------------+-----------
+ Essex   | Debt-to-income ratio                           |    4780 |           42.0 |      40.9
+ Essex   | Credit history                                 |    4780 |           25.2 |      28.9
+ Essex   | Collateral                                     |    4780 |           17.5 |      17.0
+ Essex   | Credit application incomplete                  |    4780 |           15.7 |      14.0
+ Essex   | Other                                          |    4780 |           11.0 |      10.8
+ Essex   | Unverifiable information                       |    4780 |            5.1 |       4.5
+ Essex   | Insufficient cash (downpayment, closing costs) |    4780 |            3.7 |       3.3
+ Essex   | Employment history                             |    4780 |            1.6 |       1.5
+ Essex   | Mortgage insurance denied                      |    4780 |            0.1 |       0.1
+ Passaic | Debt-to-income ratio                           |    2895 |           44.1 |      40.9
+ Passaic | Credit history                                 |    2895 |           25.5 |      28.9
+ Passaic | Collateral                                     |    2895 |           17.5 |      17.0
+ Passaic | Credit application incomplete                  |    2895 |           12.2 |      14.0
+ Passaic | Other                                          |    2895 |           10.9 |      10.8
+ Passaic | Unverifiable information                       |    2895 |            4.8 |       4.5
+ Passaic | Insufficient cash (downpayment, closing costs) |    2895 |            3.5 |       3.3
+ Passaic | Employment history                             |    2895 |            1.7 |       1.5
+ Passaic | Mortgage insurance denied                      |    2895 |            0.4 |       0.1
+ Union   | Debt-to-income ratio                           |    3294 |           41.1 |      40.9
+ Union   | Credit history                                 |    3294 |           27.7 |      28.9
+ Union   | Collateral                                     |    3294 |           17.1 |      17.0
+ Union   | Credit application incomplete                  |    3294 |           14.4 |      14.0
+ Union   | Other                                          |    3294 |           10.6 |      10.8
+ Union   | Unverifiable information                       |    3294 |            5.6 |       4.5
+ Union   | Insufficient cash (downpayment, closing costs) |    3294 |            3.0 |       3.3
+ Union   | Employment history                             |    3294 |            1.3 |       1.5
+ Union   | Mortgage insurance denied                      |    3294 |            0.1 |       0.1
+
+-- C4 same lender, different behavior across a county border (>= 100 decided applications on each side, 2024)
+                 lender                  |  county   |  neighbor  | decided_a | decided_b | denial_a | denial_b |  gap  
+-----------------------------------------+-----------+------------+-----------+-----------+----------+----------+-------
+ Bank of America, National Association   | Morris    | Passaic    |       645 |       308 |     35.8 |     64.9 | -29.1
+ Provident Bank                          | Hudson    | Union      |       108 |       129 |     57.4 |     28.7 |  28.7
+ Provident Bank                          | Essex     | Hudson     |       238 |       108 |     31.5 |     57.4 | -25.9
+ Bank of America, National Association   | Atlantic  | Cape May   |       283 |       134 |     61.1 |     36.6 |  24.6
+ LOANDEPOT.COM, LLC                      | Hudson    | Union      |       649 |       187 |      7.1 |     30.5 | -23.4
+ SOUTH JERSEY                            | Atlantic  | Gloucester |       115 |       173 |     47.0 |     23.7 |  23.3
+ Bank of America, National Association   | Atlantic  | Ocean      |       283 |       706 |     61.1 |     38.0 |  23.2
+ NEWREZ LLC                              | Morris    | Passaic    |       112 |       114 |     37.5 |     60.5 | -23.0
+ Manufacturers and Traders Trust Company | Morris    | Passaic    |       127 |       105 |     36.2 |     59.0 | -22.8
+ Bank of America, National Association   | Bergen    | Passaic    |      1033 |       308 |     42.4 |     64.9 | -22.5
+ K. HOVNANIAN AMERICAN MORTGAGE, L.L.C.  | Middlesex | Monmouth   |       110 |       137 |      5.5 |     27.7 | -22.3
+ LOANDEPOT.COM, LLC                      | Essex     | Hudson     |       309 |       649 |     29.1 |      7.1 |  22.0
+ NEWREZ LLC                              | Middlesex | Monmouth   |       231 |       277 |     44.6 |     23.1 |  21.5
+ NEWREZ LLC                              | Bergen    | Passaic    |       234 |       114 |     39.7 |     60.5 | -20.8
+ U.S. Bank National Association          | Essex     | Morris     |       166 |       172 |     42.2 |     22.1 |  20.1
+
+==================================================================
+D. INVESTIGATION 3: WHAT CHANGED?
+==================================================================
+-- D1 refinance applications by county, 2021 vs 2023 vs 2024
+   county   | refi_2021 | refi_2023 | refi_2024 | pct_change_21_23 
+------------+-----------+-----------+-----------+------------------
+ Morris     |     24840 |      2900 |      4175 |            -88.3
+ Somerset   |     16102 |      1925 |      2853 |            -88.0
+ Bergen     |     39040 |      4739 |      6598 |            -87.9
+ Hunterdon  |      6627 |       808 |      1203 |            -87.8
+ Hudson     |     17595 |      2224 |      2973 |            -87.4
+ Middlesex  |     35922 |      4629 |      6592 |            -87.1
+ Cape May   |      9501 |      1259 |      1505 |            -86.7
+ Monmouth   |     34106 |      4965 |      6610 |            -85.4
+ Union      |     21412 |      3335 |      4381 |            -84.4
+ Passaic    |     16389 |      2710 |      3563 |            -83.5
+ Ocean      |     33641 |      5627 |      7576 |            -83.3
+ Sussex     |      8134 |      1406 |      1989 |            -82.7
+ Mercer     |     13862 |      2472 |      3305 |            -82.2
+ Warren     |      4993 |       894 |      1149 |            -82.1
+ Essex      |     26957 |      4953 |      6609 |            -81.6
+ Burlington |     22868 |      4443 |      6040 |            -80.6
+ Atlantic   |     11009 |      2272 |      2955 |            -79.4
+ Gloucester |     14626 |      3094 |      3898 |            -78.8
+ Camden     |     20066 |      4779 |      6105 |            -76.2
+ Salem      |      2159 |       542 |       758 |            -74.9
+ Cumberland |      4011 |      1116 |      1358 |            -72.2
+
+-- D2 the 20 largest 2021 lenders by NJ originations, and what happened to them
+                  lender                   | y2021 | y2022 | y2023 | y2024 | pct_change_21_24 
+-------------------------------------------+-------+-------+-------+-------+------------------
+ ROCKET MORTGAGE, LLC                      | 33200 | 11329 |  7456 |  9743 |            -70.7
+ LOANDEPOT.COM, LLC                        | 15957 |  5532 |  2366 |  3100 |            -80.6
+ Wells Fargo Bank, National Association    | 14713 |  5714 |  2331 |  1656 |            -88.7
+ UNITED WHOLESALE MORTGAGE, LLC            | 12191 |  6609 |  4898 |  6114 |            -49.8
+ NJ LENDERS CORP.                          | 11177 |  3299 |  2558 |  2190 |            -80.4
+ JPMorgan Chase Bank, National Association | 10120 |  4154 |  2147 |  2518 |            -75.1
+ FREEDOM MORTGAGE CORPORATION              |  9026 |  1517 |   513 |  1246 |            -86.2
+ CROSSCOUNTRY MORTGAGE, LLC                |  8859 |  4928 |  4555 |  6426 |            -27.5
+ Bank of America, National Association     |  8297 |  5715 |  4736 |  4632 |            -44.2
+ PNC Bank, National Association            |  7657 |  9516 |  5701 |  5207 |            -32.0
+ GUARANTEED RATE, INC.                     |  7539 |  4001 |  2917 |  3643 |            -51.7
+ NEWREZ LLC                                |  6602 |  1312 |   920 |  1637 |            -75.2
+ CALIBER HOME LOANS, INC.                  |  6550 |  2599 |   238 |       |                 
+ TD Bank, National Association             |  6183 |  7628 |  6707 |  6524 |              5.5
+ BETTER MORTGAGE CORPORATION               |  6000 |   926 |   251 |   235 |            -96.1
+ HOME POINT FINANCIAL CORPORATION          |  5954 |  1740 |       |       |                 
+ Advisors Mortgage Group, L.L.C.           |  5946 |  2657 |  1860 |  1767 |            -70.3
+ NATIONSTAR MORTGAGE LLC                   |  5889 |  2067 |   807 |  1413 |            -76.0
+ Citizens Bank, National Association       |  5658 |  6761 |  5942 |  5849 |              3.4
+ PENNYMAC LOAN SERVICES, LLC               |  5466 |  1899 |  1657 |  2208 |            -59.6
+
+-- D3 lender entries and exits by county, 2023 -> 2024 (>= 50 originations one year, < 10 the other)
+  county   |               lender               | o23 | o24 | change  
+-----------+------------------------------------+-----+-----+---------
+ Ocean     | Lakeland Bank                      | 285 |   0 | exited
+ Sussex    | Lakeland Bank                      | 204 |   0 | exited
+ Essex     | Lakeland Bank                      | 184 |   0 | exited
+ Morris    | Lakeland Bank                      | 170 |   0 | exited
+ Union     | Lakeland Bank                      | 169 |   0 | exited
+ Passaic   | Lakeland Bank                      | 150 |   0 | exited
+ Atlantic  | AFFORDABLE MORTGAGE ADVISORS, LLC. |   0 | 145 | entered
+ Bergen    | Lakeland Bank                      | 129 |   0 | exited
+ Ocean     | Skyrock Mortgage Corp              |   0 | 102 | entered
+ Middlesex | Lakeland Bank                      | 101 |   0 | exited
+ Ocean     | DRAPER AND KRAMER MORTGAGE CORP.   |  90 |   0 | exited
+ Ocean     | VAN DYK MORTGAGE CORPORATION       |  88 |   1 | exited
+ Monmouth  | Lakeland Bank                      |  88 |   0 | exited
+ Somerset  | Lakeland Bank                      |  82 |   0 | exited
+ Middlesex | Northpointe Bank                   |  80 |   7 | exited
+ Union     | Northpointe Bank                   |  77 |   3 | exited
+ Bergen    | Unity Bank                         |   0 |  74 | entered
+ Ocean     | The Loan Store, Inc.               |   9 |  73 | entered
+ Monmouth  | Cornerstone First Mortgage, Inc    |   9 |  66 | entered
+ Hudson    | Northpointe Bank                   |  63 |   5 | exited
+ Camden    | Republic Bank                      |  57 |   0 | exited
+ Bergen    | Northpointe Bank                   |  56 |   9 | exited
+ Union     | The Loan Store, Inc.               |   5 |  54 | entered
+ Union     | PULTE MORTGAGE LLC                 |  52 |   0 | exited
+ Middlesex | PULTE MORTGAGE LLC                 |   0 |  50 | entered
+
+-- D4 unusual denial-rate changes 2023 -> 2024 (z-score across counties)
+   county   | change_pts |   z   
+------------+------------+-------
+ Warren     |       1.89 |  3.08
+ Monmouth   |      -2.68 | -1.42
+ Cape May   |       0.18 |  1.40
+ Ocean      |      -2.59 | -1.33
+ Union      |      -2.27 | -1.01
+ Cumberland |      -2.10 | -0.84
+ Salem      |      -0.48 |  0.75
+ Atlantic   |      -0.49 |  0.74
+ Hudson     |      -1.91 | -0.66
+ Burlington |      -0.69 |  0.55
+ Sussex     |      -0.70 |  0.53
+ Camden     |      -1.74 | -0.49
+ Morris     |      -1.63 | -0.38
+ Middlesex  |      -1.62 | -0.38
+ Hunterdon  |      -0.86 |  0.37
+ Mercer     |      -1.54 | -0.30
+ Bergen     |      -1.50 | -0.25
+ Gloucester |      -1.48 | -0.23
+ Somerset   |      -1.46 | -0.22
+ Passaic    |      -1.15 |  0.09
+ Essex      |      -1.24 |  0.00
+
+==================================================================
+E. STRETCH: NEIGHBORHOOD LENDING GAP (Newark metro counties, 2021)
+==================================================================
+-- E1 share of each lender's applications from majority-minority tracts vs all other lenders (>= 200 applications)
+                         lender                          | applications | pct_majority_minority | peers_pct | ratio_to_peers 
+---------------------------------------------------------+--------------+-----------------------+-----------+----------------
+ Lakeland Bank                                           |         1287 |                   8.1 |      29.8 |           0.27
+ Morgan Stanley Private Bank, National Association       |          233 |                   3.9 |      29.7 |           0.13
+ HSBC BANK USA, NATIONAL ASSOCIATION                     |          215 |                   7.0 |      29.7 |           0.24
+ Kearny Bank                                             |          620 |                   8.5 |      29.7 |           0.29
+ PINNACLE MORTGAGE, INC.                                 |          336 |                   9.5 |      29.7 |           0.32
+ PICATINNY FEDERAL CREDIT UNION                          |          324 |                   9.9 |      29.7 |           0.33
+ AMERICAN FEDERAL MORTGAGE CORPORATION                   |          877 |                  10.7 |      29.8 |           0.36
+ The Huntington National Bank                            |          288 |                  12.2 |      29.7 |           0.41
+ PROVIDENT FUNDING ASSOCIATES, L.P.                      |          613 |                  12.1 |      29.7 |           0.41
+ VISIONS                                                 |          512 |                  12.3 |      29.7 |           0.41
+ GUARANTEED RATE AFFINITY, LLC                           |         1769 |                  12.2 |      29.9 |           0.41
+ Third Federal Savings and Loan Association of Cleveland |          539 |                  12.4 |      29.7 |           0.42
+ U.S. Bank National Association                          |         1367 |                  14.8 |      29.8 |           0.50
+ Strong Home Mortgage, LLC                               |          219 |                  15.5 |      29.7 |           0.52
+ MORTGAGE ACCESS CORP.                                   |         1138 |                  15.9 |      29.8 |           0.53
+ Unity Bank                                              |          262 |                  15.6 |      29.7 |           0.53
+ GUARANTEED RATE, INC.                                   |         5143 |                  16.2 |      30.1 |           0.54
+ Columbia Bank                                           |          974 |                  16.2 |      29.7 |           0.55
+ MLD MORTGAGE INC.                                       |          843 |                  17.1 |      29.7 |           0.57
+ JPMorgan Chase Bank, National Association               |         4231 |                  17.2 |      30.0 |           0.57
+

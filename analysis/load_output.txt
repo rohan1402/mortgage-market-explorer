@@ -1,0 +1,132 @@
+18:54:04  Rebuilding schema from empty
+psql:db/schema.sql:19: NOTICE:  drop cascades to 18 other objects
+DETAIL:  drop cascades to table mme.action_taken_code
+drop cascades to table mme.loan_type_code
+drop cascades to table mme.loan_purpose_code
+drop cascades to table mme.denial_reason_code
+drop cascades to table mme.occupancy_code
+drop cascades to table mme.dti_bucket_code
+drop cascades to table mme.county
+drop cascades to table mme.county_adjacency
+drop cascades to table mme.census_tract
+drop cascades to table mme.lender
+drop cascades to table mme.data_release
+drop cascades to table mme.application
+drop cascades to table mme.application_denial_reason
+drop cascades to table mme.market_summary
+drop cascades to table mme.app_user
+drop cascades to table mme.saved_investigation
+drop cascades to table mme.watchlist_item
+drop cascades to function mme.num(text)
+18:54:05  Loading county adjacency
+18:54:05  [2021] staging data/raw/hmda_nj_2021.csv
+NOTICE:  table "stage_raw" does not exist, skipping
+ setseed 
+---------
+ 
+(1 row)
+
+      step      |          reason          | count 
+----------------+--------------------------+-------
+ [2021] dropped | purchased loan (D16)     | 78888
+ [2021] dropped | county missing or not NJ |  1959
+ [2021] dropped | loan_amount missing      |   300
+(3 rows)
+
+18:54:30  [2021] done in 25s
+18:54:30  [2022] staging data/raw/hmda_nj_2022.csv
+NOTICE:  table "stage_raw" does not exist, skipping
+ setseed 
+---------
+ 
+(1 row)
+
+      step      |          reason          | count 
+----------------+--------------------------+-------
+ [2022] dropped | purchased loan (D16)     | 47487
+ [2022] dropped | county missing or not NJ |  3515
+ [2022] dropped | loan_amount missing      |   312
+(3 rows)
+
+18:54:45  [2022] done in 15s
+18:54:45  [2023] staging data/raw/hmda_nj_2023.csv
+NOTICE:  table "stage_raw" does not exist, skipping
+ setseed 
+---------
+ 
+(1 row)
+
+      step      |          reason          | count 
+----------------+--------------------------+-------
+ [2023] dropped | purchased loan (D16)     | 32075
+ [2023] dropped | county missing or not NJ |  1577
+ [2023] dropped | loan_amount missing      |   162
+(3 rows)
+
+18:54:55  [2023] done in 10s
+18:54:55  [2024] staging data/raw/hmda_nj_2024.csv
+NOTICE:  table "stage_raw" does not exist, skipping
+ setseed 
+---------
+ 
+(1 row)
+
+      step      |          reason          | count 
+----------------+--------------------------+-------
+ [2024] dropped | purchased loan (D16)     | 33936
+ [2024] dropped | county missing or not NJ |  1704
+ [2024] dropped | loan_amount missing      |   139
+(3 rows)
+
+18:55:06  [2024] done in 11s
+18:55:06  Lender names from data/raw/filers_nj_2021.json
+18:55:06  Lender names from data/raw/filers_nj_2022.json
+18:55:06  Lender names from data/raw/filers_nj_2023.json
+18:55:06  Lender names from data/raw/filers_nj_2024.json
+18:55:06  Lender successors from etl/lender_successor.csv
+18:55:06  Building market_summary
+ setval  
+---------
+ 1739859
+(1 row)
+
+18:55:08  market_summary built in 2s
+18:55:08  Total load time: 64s
+== Releases
+ year | rows_read | rows_loaded |                                         rows_dropped                                          | load_seconds 
+------+-----------+-------------+-----------------------------------------------------------------------------------------------+--------------
+ 2021 |    707685 |      626538 | {"loan_amount missing": 300, "purchased loan (D16)": 78888, "county missing or not NJ": 1959} |         25.0
+ 2022 |    414459 |      363145 | {"loan_amount missing": 312, "purchased loan (D16)": 47487, "county missing or not NJ": 3515} |         15.0
+ 2023 |    293775 |      259961 | {"loan_amount missing": 162, "purchased loan (D16)": 32075, "county missing or not NJ": 1577} |         10.0
+ 2024 |    323940 |      288161 | {"loan_amount missing": 139, "purchased loan (D16)": 33936, "county missing or not NJ": 1704} |         11.0
+(4 rows)
+
+== Tables
+        table_name         | approx_rows | table_size | index_size | total  
+---------------------------+-------------+------------+------------+--------
+ application               |     1537805 | 138 MB     | 33 MB      | 171 MB
+ application_denial_reason |      319827 | 11 MB      | 8176 kB    | 19 MB
+ market_summary            |      107327 | 7160 kB    | 4480 kB    | 11 MB
+ census_tract              |        8464 | 504 kB     | 416 kB     | 944 kB
+ lender                    |        1269 | 168 kB     | 160 kB     | 360 kB
+ data_release              |           4 | 8192 bytes | 32 kB      | 48 kB
+ county                    |          21 | 8192 bytes | 32 kB      | 48 kB
+ loan_type_code            |           4 | 8192 bytes | 16 kB      | 32 kB
+ loan_purpose_code         |           6 | 8192 bytes | 16 kB      | 32 kB
+ occupancy_code            |           3 | 8192 bytes | 16 kB      | 32 kB
+ dti_bucket_code           |          19 | 8192 bytes | 16 kB      | 32 kB
+ action_taken_code         |           8 | 8192 bytes | 16 kB      | 32 kB
+ denial_reason_code        |           9 | 8192 bytes | 16 kB      | 32 kB
+ lender_successor          |           1 | 8192 bytes | 16 kB      | 32 kB
+ app_user                  |           0 | 0 bytes    | 16 kB      | 24 kB
+ county_adjacency          |         116 | 8192 bytes | 16 kB      | 24 kB
+ saved_investigation       |           0 | 0 bytes    | 8192 bytes | 16 kB
+ watchlist_item            |           0 | 0 bytes    | 8192 bytes | 16 kB
+(18 rows)
+
+== Database size
+ pg_size_pretty 
+----------------
+ 211 MB
+(1 row)
+

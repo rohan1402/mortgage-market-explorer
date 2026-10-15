@@ -1,0 +1,125 @@
+SET
+CREATE VIEW
+== F1 Cape May jumbo oddity: 2024 purchase originations by conforming flag and amount band
+ conforming | occupancy | count |  min   |   med   |   max   
+------------+-----------+-------+--------+---------+---------
+ f          |         1 |    63 | 405000 | 1055000 | 3625000
+ f          |         2 |   352 | 405000 | 1165000 | 5505000
+ f          |         3 |    56 | 775000 | 1265000 | 6565000
+ t          |         1 |   570 |  15000 |  345000 |  985000
+ t          |         2 |   660 |  45000 |  405000 |  855000
+ t          |         3 |   280 |  65000 |  395000 |  945000
+            |         3 |     4 | 545000 |  760000 | 1935000
+
+== F1b statewide: NC loans under $766,550 in 2024 purchases, by county
+    name    | nc_under_baseline | nc_all | nc_under_2nd_lien | nc_under_govt 
+------------+-------------------+--------+-------------------+---------------
+ Cape May   |                21 |    471 |                 8 |             0
+ Atlantic   |                15 |    120 |                 5 |             0
+ Mercer     |                11 |    226 |                 5 |             0
+ Monmouth   |                 6 |    335 |                 6 |             0
+ Burlington |                 5 |     78 |                 4 |             0
+ Camden     |                 4 |     61 |                 0 |             0
+ Bergen     |                 3 |    417 |                 3 |             0
+ Essex      |                 2 |    340 |                 2 |             0
+
+== F2 denial rate by purpose statewide 2024
+        label         | decided | denial_rate 
+----------------------+---------+-------------
+ Other purpose        |   34986 |        45.2
+ Home improvement     |   33835 |        40.3
+ Cash-out refinancing |   35316 |        33.1
+ Refinancing          |   25317 |        25.0
+ Not applicable       |     111 |        19.8
+ Home purchase        |   93625 |        11.3
+
+== F3 home purchase denial rate by county 2024, with FHA share
+    name    | decided | purchase_denial_rate 
+------------+---------+----------------------
+ Essex      |    6672 |                 14.8
+ Hudson     |    5289 |                 14.6
+ Cumberland |    1759 |                 14.3
+ Warren     |    1470 |                 13.3
+ Passaic    |    3804 |                 13.2
+ Middlesex  |    7440 |                 12.5
+ Atlantic   |    3482 |                 12.2
+ Union      |    4704 |                 12.0
+ Mercer     |    3957 |                 11.6
+ Bergen     |    8001 |                 11.5
+ Salem      |     928 |                 11.2
+ Monmouth   |    7347 |                 10.6
+ Sussex     |    2058 |                 10.3
+ Ocean      |    8418 |                 10.2
+ Burlington |    6050 |                  9.9
+ Cape May   |    2273 |                  9.9
+ Camden     |    5981 |                  9.8
+ Somerset   |    3542 |                  9.6
+ Morris     |    4998 |                  8.7
+ Hunterdon  |    1519 |                  8.5
+ Gloucester |    3933 |                  8.3
+
+== F4 denial reasons by purpose 2024 (share of denials citing reason)
+       purpose        |            reason             | pct  
+----------------------+-------------------------------+------
+ Cash-out refinancing | Debt-to-income ratio          | 34.5
+ Cash-out refinancing | Credit application incomplete | 26.0
+ Cash-out refinancing | Credit history                | 24.7
+ Cash-out refinancing | Collateral                    | 15.3
+ Home improvement     | Debt-to-income ratio          | 45.8
+ Home improvement     | Credit history                | 36.3
+ Home improvement     | Collateral                    | 18.6
+ Home purchase        | Debt-to-income ratio          | 39.9
+ Home purchase        | Collateral                    | 22.1
+ Home purchase        | Credit history                | 16.0
+ Home purchase        | Other                         | 15.6
+ Other purpose        | Debt-to-income ratio          | 40.5
+ Other purpose        | Credit history                | 35.5
+ Refinancing          | Debt-to-income ratio          | 44.9
+ Refinancing          | Credit history                | 25.1
+
+== F5 Lakeland and Provident originations by year
+      name      | year | originations | apps 
+----------------+------+--------------+------
+ Lakeland Bank  | 2021 |         1628 | 2485
+ Lakeland Bank  | 2022 |         2107 | 3150
+ Lakeland Bank  | 2023 |         1668 | 2759
+ Provident Bank | 2021 |          915 | 1519
+ Provident Bank | 2022 |         1012 | 1888
+ Provident Bank | 2023 |          740 | 1500
+ Provident Bank | 2024 |         1469 | 2847
+
+== F6 Lakeland vs peers, majority-minority tract share, Newark MD counties, by year
+ year |      name      |  n   | pct_mm | peers_pct | ratio 
+------+----------------+------+--------+-----------+-------
+ 2021 | Lakeland Bank  | 1287 |    8.1 |      29.8 |  0.27
+ 2022 | Lakeland Bank  | 1303 |   19.3 |      40.9 |  0.47
+ 2023 | Lakeland Bank  | 1286 |   45.6 |      41.4 |  1.10
+ 2021 | Provident Bank |  417 |   24.7 |      29.7 |  0.83
+ 2022 | Provident Bank |  555 |   31.9 |      40.6 |  0.78
+ 2023 | Provident Bank |  486 |   32.3 |      41.5 |  0.78
+ 2024 | Provident Bank | 1184 |   30.6 |      40.9 |  0.75
+
+== F7 pricing comparability under looser rules (2024; and 2023-24 pooled), counties with >=3 comparable lenders
+           rule           | counties_with_any | counties_with_3plus | lender_county_pairs 
+--------------------------+-------------------+---------------------+---------------------
+ 2023-24, 350-550k, n>=20 |                19 |                  18 |                 394
+ 2024, 350-550k, n>=20    |                18 |                  17 |                 196
+ 2024, 350-550k, n>=30    |                17 |                  14 |                 123
+ 2024, 400-500k, n>=20    |                16 |                  13 |                  88
+ 2024, 400-500k, n>=30    |                13 |                   7 |                  44
+
+== F8 statewide applications by purpose 2021 vs 2023
+    k     |  y21   |  y23   |  y24   | chg_21_23 
+----------+--------+--------+--------+-----------
+ other    |  53831 |  78965 |  85017 |      46.7
+ purchase | 188123 | 119589 | 120459 |     -36.4
+ refi     | 383860 |  61092 |  82195 |     -84.1
+
+== F9 Middlesex: rate + points (2024 similar loans) for the 4 comparable lenders
+              name              |  n  | med_rate | med_points | avg_points | med_costs 
+--------------------------------+-----+----------+------------+------------+-----------
+ ROCKET MORTGAGE, LLC           |  67 |      6.5 |          0 |       2273 |      6755
+ UNITED WHOLESALE MORTGAGE, LLC | 110 |    6.624 |          0 |        884 |   11174.5
+ CROSSCOUNTRY MORTGAGE, LLC     |  89 |    6.625 |          0 |       2214 |      7954
+ MOVEMENT MORTGAGE, LLC         |  34 |    6.875 |     4130.5 |       3767 |   10056.5
+
