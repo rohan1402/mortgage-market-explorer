@@ -115,6 +115,8 @@
 | D17 | 10/10 | Add a `lender_successor` table (old LEI → new LEI, effective date) so mergers aren't shown as exits. | Rohan; team agreed 10/13. Lakeland → Provident (May 2024) confirmed; verify Caliber and Home Point. |
 | D19 | 10/10 | Every denial comparison is per loan purpose, defaulting to home purchase. | Rohan; team agreed 10/13. Purchase 11.3% vs. home improvement 40% statewide. |
 | D21 | 10/10 | Name lenders everywhere, with sample sizes and a standard caveat line on lending-gap and cross-county denial views. | Rohan; team agreed 10/13. |
+| D6 | 10/16 | Midterm owners: project page Alex & Rohan; ER diagram, schema & data plan Juhun; mockup pages Junemo. Data and loader stay with Rohan. | [Meeting notes](meetings/2026-10-16.md). |
+| D11 | 10/16 | Pitch: Alex (introduction and problem, 7 min), Junemo (ER diagram and mockups, 3 min), Rohan (where the data comes from and why it's hard, 5 min). Juhun can't attend 10/22 (confirmed with the professor) and writes the ERD Q&A notes. | Rehearsal date still to set. |
 
 ---
 
