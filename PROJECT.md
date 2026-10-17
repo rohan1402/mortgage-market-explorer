@@ -47,7 +47,7 @@ Access rules must be **enforced in the app** by the final (not just documented).
 
 ## 5. Guided investigations
 
-Research and recommendation: [`docs/investigations.md`](docs/investigations.md). Decided 10/16 (D1): the three below, with the four questions from Alex's list folded in; denial reasons are a drill-down inside Investigation 2.
+Research and recommendation: [`docs/investigations.md`](docs/investigations.md). **[OPEN: final pick of 3]**
 
 Recommended set (covers all five of the professor's examples inside three workflows, plus one thing no public tool does):
 
@@ -72,15 +72,14 @@ Recommended set (covers all five of the professor's examples inside three workfl
 - **Frontend / map:** server-rendered templates + Leaflet or Plotly maps **[OPEN]**
 - **Host:** Neon or Supabase Postgres (about 0.5 GB free) + Render/Railway for the app **[OPEN]**. Render's free Postgres (256 MB) is likely too small for 1.74M rows plus indexes.
 
-## 8. Team and ownership (decided 10/16, D6 and D11)
+## 8. Team and ownership **[OPEN]**
 
 | Area | Owner | Midterm output |
 |---|---|---|
-| Data (download, loader, row counts, sizes) | Rohan | `etl/`, real numbers in `docs/data-plan.md` |
-| Schema (ERD, `schema.sql`, access rules, design alternative) | Juhun | `db/schema.sql`, `docs/erd.md`, `docs/decisions.md` |
-| Mockup pages (one screen per user type) | Junemo | Clickable prototype, screenshots as mockups |
-| Project page | Alex, Rohan | Project page on GitHub Pages |
-| Pitch (10/22) | Alex (problem, 7 min), Junemo (ERD and mockups, 3 min), Rohan (data and what's hard, 5 min) | Juhun is away on 10/22 (confirmed with the professor) and prepares the ERD Q&A notes |
+| Data (download, loader, row counts, sizes) | TBD | `etl/`, real numbers in `docs/data-plan.md` |
+| Schema (ERD, `schema.sql`, access rules, design alternative) | TBD | `db/schema.sql`, `docs/erd.md`, `docs/decisions.md` |
+| Prototype + mockups (Investigation 1 first) | TBD | Clickable prototype, screenshots as mockups |
+| Project page + pitch | TBD | Project page, pitch outline |
 
 ## 9. Midterm plan
 

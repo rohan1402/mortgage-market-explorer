@@ -4,7 +4,7 @@
 > **How to use it:** anyone can add a decision under "Open". In the meeting, go top to bottom. When the group agrees, move the item to "Decided" with the date and the choice, and copy the reasoning into [`decisions.md`](decisions.md) if it's a design decision (those feed the graded "design alternative" and "engineering difficulties" sections).
 > Each item has a **recommendation** so the meeting has a starting point, not a blank page. Disagree freely.
 
-**Next meeting:** TBD (rehearsal before 10/22). D1 was finalized on 10/16.
+**Next meeting:** date TBD — goal: finalize D1 (which investigations we build).
 
 > **Update (10/10):** the full NJ 2021–2024 data is loaded; real numbers are in [`data-findings.md`](data-findings.md). Rohan settled D2, D3, D7, D9, D10, D16, D17, D19 and D21 (see **Decided** below). Everything still under **Open** is for the meeting.
 
@@ -115,9 +115,6 @@
 | D17 | 10/10 | Add a `lender_successor` table (old LEI → new LEI, effective date) so mergers aren't shown as exits. | Rohan; team agreed 10/13. Lakeland → Provident (May 2024) confirmed; verify Caliber and Home Point. |
 | D19 | 10/10 | Every denial comparison is per loan purpose, defaulting to home purchase. | Rohan; team agreed 10/13. Purchase 11.3% vs. home improvement 40% statewide. |
 | D21 | 10/10 | Name lenders everywhere, with sample sizes and a standard caveat line on lending-gap and cross-county denial views. | Rohan; team agreed 10/13. |
-| D1 | 10/16 | Three investigations (A loan like mine, Market vs. its neighbors, What changed?) with Alex's four questions folded in: Q1 → 1, Q2 and Q4 → 2 (denial reasons as a drill-down by lender and loan purpose, D20), Q3 → 3 (`LAG()`, 2 SD, minimum 30). Lending gap stays stretch / pitch closer. | Option A + D merged. [Meeting notes](meetings/2026-10-16.md). |
-| D6 | 10/16 | Midterm owners: project page Alex & Rohan; ER diagram, schema & data plan Juhun; mockup pages Junemo. Data and loader stay with Rohan. | [Meeting notes](meetings/2026-10-16.md). |
-| D11 | 10/16 | Pitch: Alex (introduction and problem, 7 min), Junemo (ER diagram and mockups, 3 min), Rohan (where the data comes from and why it's hard, 5 min). Juhun can't attend 10/22 (confirmed with the professor) and writes the ERD Q&A notes. | Rehearsal date still to set. |
 
 ---
 
