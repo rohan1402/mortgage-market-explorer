@@ -47,7 +47,7 @@ Access rules must be **enforced in the app** by the final (not just documented).
 
 ## 5. Guided investigations
 
-Research and recommendation: [`docs/investigations.md`](docs/investigations.md). **[OPEN: final pick of 3]**
+Research and recommendation: [`docs/investigations.md`](docs/investigations.md). Decided 10/16 (D1): the three below, with the four questions from Alex's list folded in; denial reasons are a drill-down inside Investigation 2.
 
 Recommended set (covers all five of the professor's examples inside three workflows, plus one thing no public tool does):
 
