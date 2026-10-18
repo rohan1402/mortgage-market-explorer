@@ -17,7 +17,7 @@ Progress on each one is tracked in the **Project status** section of [`README.md
 |---|---|---|
 | Wed 9/30 | Proposal | 3 |
 | **Thu 10/22, 6–9 PM** (our slot) | Midterm pitch, about 15 min of a 20-min slot. No working app or data needed. | 10 |
-| **Fri 10/23, end of day** | Project page live (4), with the proposal, ER diagram + schema + data plan (3) and mockups, at least one screen per user type (4). Grading starts 10/24. | 11 |
+| **Fri 10/23, end of day** | Project page live on Canvas (4), with the proposal, ER diagram + schema + data plan (3) and mockups, at least one screen per user type (4). Grading starts 10/24. | 11 |
 | Wed 12/9, 11:59 PM | Live app + sample sign-ins (15, of which 3 for ≥1M rows), user guides (4), documented code + project page (8) | 27 |
 | Thu 12/10, in class | Final presentation, up to 15 min | 10 |
 | Before 12/10 | Bonus: real bugs found in other teams' apps | +2 |
@@ -94,7 +94,7 @@ Recommended set (covers all five of the professor's examples inside three workfl
 | Mon 10/19 | Mockups for every user type, project page draft complete |
 | Tue 10/20 | Pitch rehearsal (timed, ≤ 12 min to leave room for questions) |
 | **Thu 10/22, 6–9 PM** | Pitch (our slot) |
-| **Fri 10/23, end of day** | Project page live with everything on it (grading starts 10/24) |
+| **Fri 10/23, end of day** | Project page live on Canvas with everything on it (grading starts 10/24) |
 
 ## 10. Repo map
 
