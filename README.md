@@ -15,10 +15,10 @@ _Updated 2026-10-18. When you finish or start a task, update this section in the
 | Due | Deliverable | Pts | Owner | Status |
 |---|---|---|---|---|
 | Wed 9/30 | Proposal | 3 | Team | ✅ Submitted |
-| **Tue 10/20, 3:00 PM** | _Team target:_ all midterm work finalized, everyone's GitHub username in | | Everyone | ⬜ Not started |
+| **Tue 10/20, 3:00 PM** | _Team target:_ all midterm work finalized, everyone's GitHub username in | | Everyone | 🟡 All four of us are on GitHub; midterm work in progress |
 | **Thu 10/22, 6–9 PM** (our slot) | Midterm pitch, up to 15 min: introduction and problem (7 min), ER diagram and mockups (3 min), where the data comes from and why it's hard (5 min). No working app needed. | 10 | Alex, Junemo, Rohan (in that order) | ⬜ Not started |
 | **Fri 10/23, end of day** | Project page live on Canvas: a midterm page with the ER diagram, schema, data plan and mockups (the proposal already has its own page) | 4 | Alex, Rohan | 🟡 Draft: [docs/midterm-page.md](docs/midterm-page.md). Mockups still to add; not on Canvas yet. |
-| **Fri 10/23, end of day** | ER diagram, schema and data plan (on the page) | 3 | Juhun | 🟡 In the repo: [ERD](docs/erd.md), [schema](db/schema.sql), [data plan](docs/data-plan.md); PR #3 in review. On the draft page. |
+| **Fri 10/23, end of day** | ER diagram, schema and data plan (on the page) | 3 | Juhun | ✅ Done: [ERD](docs/erd.md), [schema](db/schema.sql), [data plan](docs/data-plan.md) (PR #3 merged 10/18). On the draft page. |
 | **Fri 10/23, end of day** | Mockups, at least one screen per user type (on the page) | 4 | Junemo | 🟡 In progress |
 | Wed 12/9, 11:59 PM | Live app + sample sign-ins (3 of the 15 pts for ≥1M rows) | 15 | TBD | 🟡 1.54M rows load locally. App not started (stack D4, host D5 open). |
 | Wed 12/9, 11:59 PM | User guides | 4 | TBD | ⬜ Not started |
@@ -29,17 +29,16 @@ _Updated 2026-10-18. When you finish or start a task, update this section in the
 ✅ done · 🟡 in progress · ⬜ not started. Late = −5 points. Midterm owners and pitch split are from the team's plan for 10/22. Course dates: professor's Canvas notes of 10/9 and 10/12.
 
 ### Done so far (newest first, keep about 5)
+- **10/18** ERD, design alternatives and query log merged (PR #3).
 - **10/18** Midterm page drafted: [docs/midterm-page.md](docs/midterm-page.md).
 - **10/18** The project page will be a live Canvas page, as the course requires (D7 updated).
-- **10/18** Midterm owners and pitch split set (team plan).
 - **10/15** Repo on GitHub, with one-command setup.
 - **10/10** NJ HMDA 2021–2024 loaded: 1,537,805 applications, 211 MB, rebuilds from empty in about a minute.
 
 ### Next up
-1. Finalize every midterm piece and send GitHub usernames by Tue 10/20, 3:00 PM.
-2. Review and merge PR #3 (ERD, design alternatives, query log).
-3. Put the midterm page on Canvas from [docs/midterm-page.md](docs/midterm-page.md) and add the mockups.
-4. Rehearse the pitch before Thu 10/22.
+1. Finalize every midterm piece by Tue 10/20, 3:00 PM.
+2. Put the midterm page on Canvas from [docs/midterm-page.md](docs/midterm-page.md) and add the mockups.
+3. Rehearse the pitch before Thu 10/22.
 
 Still open: D1, D4, D5, D8, D12–D15, D18, D20 ([open decisions](docs/open-decisions.md)). D6 and D11 are covered by the team plan above.
 <!-- status:end -->
