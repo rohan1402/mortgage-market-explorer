@@ -1,0 +1,4 @@
+#!/bin/sh
+# After every `git pull`: print the project brief. Switched on by ./setup.sh
+# (git config core.hooksPath .githooks).
+bash "$(git rev-parse --show-toplevel)/scripts/status.sh"
