@@ -1,22 +1,24 @@
 # Guided Investigations — Research and Recommendation
 
 > Prepared 2026-10-10 for the team meeting (decision **D1** in [`open-decisions.md`](open-decisions.md)).
+> **Decided 10/18 (D1, D20):** we build four investigations. Denial reasons became its own investigation, **Denial patterns** (Investigation 4), instead of a drill-down inside Investigation 2.
 > Goal: choose investigations that answer a question someone actually has, that public HMDA tools don't already answer, and that produce heavy, real queries for our "behavior at scale" grade.
 
 ---
 
 ## 1. Summary
 
-**Recommended set:** three core investigations plus one stretch. Together they cover all five of the professor's examples, and the first adds something no public HMDA tool offers (comparing what similar borrowers actually paid, by lender).
+**The set:** four investigations plus one stretch. Together they cover all five of the professor's examples, and the first adds something no public HMDA tool offers (comparing what similar borrowers actually paid, by lender).
 
 | # | Investigation | User | Question it answers | Professor's examples covered |
 |---|---|---|---|---|
 | 1 | **A loan like mine** | Homebuyer | "Where in NJ is a loan like mine normal, is it a jumbo loan there, who makes loans like it, and what did people pay?" | #1, #5, + pricing |
-| 2 | **Market vs. its neighbors** | Analyst | "Why does this county look so different from the counties next to it?" | #2, #4, #5 |
+| 2 | **Market vs. its neighbors** | Analyst | "Why does this county look so different from the counties next to it?" | #2, #5 |
 | 3 | **What changed?** | Analyst | "What moved unusually in this county or for this lender since last year?" | #3 |
+| 4 | **Denial patterns** | Analyst | "Where are applications denied more often, and what reasons do lenders give?" | #4 |
 | S | **Neighborhood lending gap** (stretch) | Analyst | "Does this lender reach majority-minority neighborhoods as often as its peers do?" | new |
 
-Why three and not five: three investigations built properly (guided steps, benchmark, written finding, saved/watchable) beat five shallow pages, and the midterm needs mockups for each one we claim.
+Why four and not five: four investigations built properly (guided steps, benchmark, written finding, saved/watchable) beat five shallow pages. The professor's #5 (lenders in one market) works best inside Investigations 1 and 2, so it isn't a page of its own.
 
 ---
 
@@ -41,7 +43,7 @@ Each candidate was scored 1–3 on five criteria:
 | Neighborhood lending gap / redlining peer test (new) | 2 | 3 | 3 | 3 | 3 | 14 |
 | Affordability stretch: DTI trends (new) | 2 | 2 | 2 | 2 | 1 | 9 |
 
-Prof #4 and #5 score lower **on their own** (the Data Browser can already show denial reasons and lender lists for one county), but they become strong **inside** a comparison, which is why they're folded into Investigation 2 rather than dropped.
+Prof #4 and #5 score lower **on their own** (the Data Browser can already show denial reasons and lender lists for one county). #5 becomes strong **inside** a comparison, so it lives in Investigations 1 and 2. #4 becomes Investigation 4 by comparing per loan purpose and by lender, where the reasons actually differ, instead of ranking counties (D20).
 
 ---
 
@@ -93,7 +95,7 @@ Prof #4 and #5 score lower **on their own** (the Data Browser can already show d
 1. **Pick a county** (or click it on the map). Its neighbors come from the Census county adjacency file.
 2. **Gap scan:** the app computes the county vs. each neighbor across a fixed set of measures (denial rate, FHA share, median loan, refi share, nonbank share, lender concentration, withdrawal rate) and **ranks the biggest gaps first**.
 3. **Drill into a gap:**
-   - *Denial gap* → reported denial reasons here vs. neighbors vs. state (DTI, credit history, collateral, incomplete application...), with a minimum-volume rule so tiny markets don't dominate. (Prof #4.)
+   - *Denial gap* → opens Investigation 4 (Denial patterns) for this county, for the reasons behind the gap.
    - *Lender gap* → the lenders active on both sides of the border: same lender, different behavior? Lenders present in one county but not the other. (Prof #5.)
 4. **Save** the comparison; add counties to a watchlist.
 
@@ -102,9 +104,9 @@ Prof #4 and #5 score lower **on their own** (the Data Browser can already show d
 - "FHA loans are 32.8% of purchase applications in Cumberland, vs. 3.8% in neighboring Cape May."
 - "Bank of America denies 35.8% of decided applications in Morris but 64.9% in Passaic." (needs a per-purpose control before we show it, D19)
 
-**Data used:** `county_code`, all outcome fields, `denial_reason_1..4`, `loan_type`, `lei`, lender type (from reporter panel), adjacency file.
+**Data used:** `county_code`, all outcome fields, `loan_type`, `lei`, lender type (from reporter panel), adjacency file.
 
-**Database substance:** self-join through `county_adjacency`; conditional aggregation across many measures in one pass; denial reasons as a separate table vs. four columns (our graded design alternative); concentration index (HHI) with window functions.
+**Database substance:** self-join through `county_adjacency`; conditional aggregation across many measures in one pass; concentration index (HHI) with window functions.
 
 ---
 
@@ -133,6 +135,33 @@ Prof #4 and #5 score lower **on their own** (the Data Browser can already show d
 
 ---
 
+### Investigation 4 — Denial patterns (Analyst)
+
+**The person:** a housing counselor, journalist or researcher asking where applications get denied more often, and why. The Data Browser shows denial reasons one county at a time, and a county's overall denial rate mostly reflects what its loans are for, so a plain ranking of counties misleads.
+
+**Guided steps:**
+1. **Pick a loan purpose** (default: home purchase, D19) and a year.
+2. **Map:** counties shaded by their denial rate for that purpose, compared with the state. Counties with fewer than 30 decided applications are greyed out.
+3. **Pick a county → why:** the reasons lenders reported there (debt-to-income, credit history, collateral, incomplete application...) next to the same shares statewide.
+4. **Who denies:** lenders with 30+ decided applications in that county, with their denial rate and top reason, named with sample sizes and a caveat line (D21).
+5. **Save** the view or add the county to a watchlist.
+
+**Example findings (real numbers, see [`data-findings.md`](data-findings.md)):**
+- "Statewide in 2024, 11.3% of home-purchase applications were denied, vs. 40% of home-improvement applications."
+- "Essex has the highest purchase denial rate in NJ at 14.8%. Gloucester has the lowest at 8.3%."
+- "Credit history is cited in 36% of home-improvement denials, vs. 16% of purchase denials."
+
+**Data used:** `action_taken`, `loan_purpose`, `county_code`, `lei`, `denial_reason_1..4`.
+
+**Honest caveats (put them in the UI):**
+- HMDA has no credit scores, so a higher denial rate is not proof that a county's lenders are stricter. Compare per loan purpose only (D19).
+- Reasons barely differ by county (DTI is cited in 41–44% of denials in the three highest-denial counties vs. 40.9% statewide). They differ much more by loan purpose and by lender, so steps 3 and 4 carry most of the story.
+- A denial can list up to four reasons, so reason shares add up to more than 100%.
+
+**Database substance:** denial reasons as a separate table vs. four columns (our graded design alternative); denial counts per purpose from `market_summary`; reason shares joining `application_denial_reason` to `application` with county, purpose and lender filters; minimum-volume rules with `HAVING`.
+
+---
+
 ### Stretch — Neighborhood lending gap (Analyst)
 
 **The person:** a community group, a journalist, or a bank's compliance analyst asking whether a lender serves majority-minority neighborhoods as much as its competitors.
@@ -151,7 +180,7 @@ Prof #4 and #5 score lower **on their own** (the Data Browser can already show d
 
 ## 5. What every investigation shares (our differentiator, built once)
 
-1. **A question-first entry page:** "What do you want to find out?" with the three investigations as cards, not a filter sidebar.
+1. **A question-first entry page:** "What do you want to find out?" with the four investigations as cards, not a filter sidebar.
 2. **Always a benchmark:** state, neighbors, prior year or peers.
 3. **A finding sentence** at the top of every result, generated from a template and query results, with the underlying numbers one click away.
 4. **Minimum-volume rules** so a county with 40 loans never "wins" a ranking.
@@ -169,7 +198,7 @@ Prof #4 and #5 score lower **on their own** (the Data Browser can already show d
 
 ## 7. Suggested midterm scope
 
-- **Mockups:** all three core investigations, plus the admin import screen and the analyst watchlist (covers one screen per user type).
+- **Mockups:** all four investigations, plus the admin import screen and the analyst watchlist (covers one screen per user type).
 - **Prototype:** Investigation 1 on a 100k-row sample, by 10/16.
 - **Pitch:** open with the homebuyer story (Investigation 1), then show "What changed?" with the 2021 → 2023 collapse, and close with what we expect to be hard (medians at 1M rows, map aggregation speed, pricing comparability).
 

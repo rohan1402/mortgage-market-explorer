@@ -198,6 +198,7 @@ Row counts are measured from the 10/10 full load (details and sources in [`data-
 | Investigation | Main tables | Why |
 |---|---|---|
 | 1. A loan like mine | `application`, `county`, `lender` | Range filter on `loan_amount`, then lender medians of rate and costs (needs the raw rows). |
-| 2. Market vs. its neighbors | `county_adjacency`, `market_summary`, `application_denial_reason`, `denial_reason_code` | Neighbors by lookup; counts from the summary; denial reasons per loan purpose (D19). |
+| 2. Market vs. its neighbors | `county_adjacency`, `market_summary` | Neighbors by lookup; counts from the summary. |
 | 3. What changed? | `market_summary`, `lender_successor` | Year-over-year change with `LAG()`; successor table so a merger isn't an exit (D17). |
+| 4. Denial patterns | `market_summary`, `application`, `application_denial_reason`, `denial_reason_code`, `lender` | Denial counts per loan purpose from the summary (D19); reason shares join the reasons table to `application`. |
 | Stretch: lending gap | `application`, `census_tract`, `lender` | Share of a lender's loans in majority-minority tracts vs. peers. |

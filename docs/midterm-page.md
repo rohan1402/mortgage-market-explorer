@@ -8,7 +8,7 @@
 
 - Our Proposal page explains the problem, who the app is for, and where the data comes from. This page adds what the midterm asks for: the ER diagram, schema, data plan and mockups.
 - The proposal promised real HMDA data, at least 1 million rows, and PostgreSQL. That part is done: New Jersey 2021–2024 is loaded, 1,537,805 applications after cleaning, and the whole database rebuilds from empty in about a minute.
-- After the professor's feedback on the proposal, the app is built around three guided investigations that each answer a question: **A loan like mine** (Homebuyer), **Market vs. its neighbors** (Analyst) and **What changed?** (Analyst).
+- After the professor's feedback on the proposal, the app is built around four guided investigations that each answer a question: **A loan like mine** (Homebuyer), and **Market vs. its neighbors**, **What changed?** and **Denial patterns** (Analyst).
 - Both user types use the site as guests for now. The mockups at the end show one screen for each.
 
 ## 1. ER diagram
@@ -97,8 +97,9 @@ Click the diagram to open it full size. It is drawn from the Mermaid source in [
 | Investigation            | Main tables                                                 | Why                                                                                             |
 |--------------------------|-------------------------------------------------------------|-------------------------------------------------------------------------------------------------|
 | A loan like mine         | application, county, lender                                 | Filters on a loan-amount range, then lender medians of rate and costs, which need the raw rows. |
-| Market vs. its neighbors | county_adjacency, market_summary, application_denial_reason | Neighbors by lookup, counts from the summary, denial reasons per loan purpose.                  |
+| Market vs. its neighbors | county_adjacency, market_summary                            | Neighbors by lookup, then counts from the summary.                                              |
 | What changed?            | market_summary, lender_successor                            | Year-over-year change with LAG(); the merger table so a merged lender isn't counted as leaving. |
+| Denial patterns          | market_summary, application, application_denial_reason      | Denial counts per loan purpose from the summary; reasons by county and lender from the raw rows. |
 
 ## 4. Design choices we measured
 
@@ -125,6 +126,6 @@ Click the diagram to open it full size. It is drawn from the Mermaid source in [
 One screen per user type:
 
 - Homebuyer: A loan like mine
-- Analyst: Market vs. its neighbors, and What changed?
+- Analyst: Market vs. its neighbors, What changed? and Denial patterns
 
 _Mockup screens go here once they are ready._

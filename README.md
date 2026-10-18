@@ -29,10 +29,10 @@ _Updated 2026-10-18. When you finish or start a task, update this section in the
 ✅ done · 🟡 in progress · ⬜ not started. Late = −5 points. Midterm owners and pitch split are from the team's plan for 10/22. Course dates: professor's Canvas notes of 10/9 and 10/12.
 
 ### Done so far (newest first, keep about 5)
+- **10/18** Four investigations, with denial reasons as its own (Denial patterns). D1 and D20 decided; docs and midterm page updated.
 - **10/18** ERD, design alternatives and query log merged (PR #3).
 - **10/18** Midterm page drafted: [docs/midterm-page.md](docs/midterm-page.md).
 - **10/18** The project page will be a live Canvas page, as the course requires (D7 updated).
-- **10/15** Repo on GitHub, with one-command setup.
 - **10/10** NJ HMDA 2021–2024 loaded: 1,537,805 applications, 211 MB, rebuilds from empty in about a minute.
 
 ### Next up
@@ -40,7 +40,7 @@ _Updated 2026-10-18. When you finish or start a task, update this section in the
 2. Put the midterm page on Canvas from [docs/midterm-page.md](docs/midterm-page.md) and add the mockups.
 3. Rehearse the pitch before Thu 10/22.
 
-Still open: D1, D4, D5, D8, D12–D15, D18, D20 ([open decisions](docs/open-decisions.md)). D6 and D11 are covered by the team plan above.
+Still open: D4, D5, D8, D12–D15, D18 ([open decisions](docs/open-decisions.md)). D6 and D11 are covered by the team plan above.
 <!-- status:end -->
 
 ### Latest activity

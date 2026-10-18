@@ -19,7 +19,7 @@ Pasted verbatim.
 | Feedback | Our response | Where |
 |---|---|---|
 | Unique value vs. Data Browser | Question-first guided investigations, always benchmarked, ending in a finding; pricing comparison no public tool offers | `PROJECT.md` §3, `investigations.md` |
-| Meaningful scenarios | Three investigations covering all five examples | `investigations.md` |
+| Meaningful scenarios | Four investigations covering all five examples | `investigations.md` |
 | Insight over charts | Template-generated finding sentences on every result | `investigations.md` |
 | Maps, comparisons, guided workflows | Map in Inv. 1, neighbor comparison in Inv. 2, step-by-step flow in all | mockups |
 | Prototype early | Prototype Investigation 1 by 10/16 | `PROJECT.md` §9 |
