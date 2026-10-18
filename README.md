@@ -48,6 +48,7 @@ Still open: D1, D4, D5, D8, D12–D15, D18, D20 ([open decisions](docs/open-deci
 _Filled in automatically on every push to `main`. Run `scripts/status.sh` to see this brief in your terminal._
 <!-- activity:start -->
 
+- 2026-10-18 · Rohan Pant · Merged PR #5: Midterm page draft, viewable on GitHub
 - 2026-10-18 · Rohan Pant · Merged PR #4: Project page is a live Canvas page (D7)
 - 2026-10-18 · Rohan Pant · Merged PR #2: README status brief with deadlines, and one-command setup
 - 2026-10-15 · Rohan Pant · Merged PR #1: Docs: sync data plan, findings, open decisions and 10/13 meeting notes
