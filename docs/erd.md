@@ -18,8 +18,10 @@ erDiagram
     COUNTY ||--o{ COUNTY_ADJACENCY : "borders"
     COUNTY ||--o{ CENSUS_TRACT : "contains"
     LENDER ||--o| LENDER_SUCCESSOR : "merged into"
-    COUNTY ||..o{ MARKET_SUMMARY : "summarized in"
-    LENDER ||..o{ MARKET_SUMMARY : "summarized in"
+    LENDER ||--o{ LENDER_SUCCESSOR : "successor of"
+    COUNTY ||--o{ MARKET_SUMMARY : "summarized in"
+    LENDER ||--o{ MARKET_SUMMARY : "summarized in"
+    MARKET_SUMMARY ||..|{ APPLICATION : "rebuilt from"
 
     %% Lookup tables (HMDA code lists)
     ACTION_TAKEN_CODE ||--o{ APPLICATION : "labels"
@@ -157,9 +159,9 @@ erDiagram
         timestamptz updated_at
     }
     WATCHLIST_ITEM {
-        int user_id FK
-        smallint county_id FK
-        int lender_id FK
+        int user_id FK,UK
+        smallint county_id FK,UK
+        int lender_id FK,UK
         text note
         int last_seen_release FK
         timestamptz created_at
