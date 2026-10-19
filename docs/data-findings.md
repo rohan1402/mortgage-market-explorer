@@ -107,7 +107,7 @@
 - **Denial *reasons* barely differ by county:**
   - In the three highest-denial counties, DTI is cited in 41–44% of denials vs. 40.9% statewide.
   - Reasons differ by purpose much more: credit history is cited in 36% of home-improvement denials vs. 16% of purchase denials.
-  - → Professor's example #4 is weak as a standalone county investigation. It works as a drill-down inside Investigation 2 (D20).
+  - → A plain county ranking of reasons would show little. Investigation 4 (Denial patterns) compares per loan purpose and by lender instead (D20, decided 10/18).
 
 ### Investigation 3 — What changed? ✅ strongest stories, needs merger handling
 - **Lender exits:** the 2023 → 2024 list is dominated by Lakeland Bank in 10 counties. That's the Provident merger, not a real exit.

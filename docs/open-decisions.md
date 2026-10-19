@@ -4,7 +4,9 @@
 > **How to use it:** anyone can add a decision under "Open". In the meeting, go top to bottom. When the group agrees, move the item to "Decided" with the date and the choice, and copy the reasoning into [`decisions.md`](decisions.md) if it's a design decision (those feed the graded "design alternative" and "engineering difficulties" sections).
 > Each item has a **recommendation** so the meeting has a starting point, not a blank page. Disagree freely.
 
-**Next meeting:** date TBD — goal: finalize D1 (which investigations we build).
+**Next meeting:** date TBD.
+
+> **Update (10/18):** D1 and D20 are decided: four investigations, with denial reasons as its own investigation (see **Decided**).
 
 > **Update (10/10):** the full NJ 2021–2024 data is loaded; real numbers are in [`data-findings.md`](data-findings.md). Rohan settled D2, D3, D7, D9, D10, D16, D17, D19 and D21 (see **Decided** below). Everything still under **Open** is for the meeting.
 
@@ -15,19 +17,6 @@
 ## Open
 
 ### 🔴 Must decide before work can start
-
-#### D1. Which guided investigations do we build?
-- **Why it matters:** the whole product, the mockups and the pitch are built around these. Professor explicitly asked for real scenarios, not charts.
-- **Options:** see [`investigations.md`](investigations.md) for the full research and scoring.
-  - A. Recommended set: (1) A loan like mine, (2) Market vs. its neighbors, (3) What changed?, + stretch: Neighborhood lending gap
-  - B. Professor's five as-is, built shallowly
-  - C. Mix: pick any three from the scored list
-- **Recommendation:** A. It covers all five of the professor's examples inside three workflows and adds lender pricing, which no public HMDA tool does.
-- **Also decide:** which one we prototype first (recommend #1, the homebuyer one) and which one leads the pitch.
-- **Data evidence (10/10):** all four work on the real data ([`data-findings.md`](data-findings.md) §3). Two surprises:
-  - The stretch (neighborhood lending gap) is the most compelling result. Lakeland Bank's ratio to peers went 0.27 → 0.47 → 1.10 from 2021 to 2023, around its 2022 DOJ settlement. Consider promoting it to core, or using it as the pitch closer.
-  - Denial *reasons* barely differ by county, so professor's example #4 should stay a drill-down inside Investigation 2, not its own investigation.
-- **10/13:** each member is looking into which investigations to build. Finalize at the next meeting.
 
 #### D4. Tech stack
 - **Backend:** Flask / FastAPI / Django / Streamlit
@@ -80,10 +69,6 @@
 - **Recommendation:** same year, ±$100k around the user's amount, at least 20 loans per lender. Always show rate *and* points/costs together, because some lenders buy rates down with points.
 - **Also decide (moved from D10):** which pricing fields to keep: interest rate, rate spread, total loan costs, discount points. About +12 bytes per row.
 
-#### D20. Denial reasons: standalone investigation or drill-down?
-- In the three highest-denial counties, DTI is cited in 41–44% of denials vs. 40.9% statewide. Reasons differ much more by loan purpose and by lender than by county.
-- **Recommendation:** drill-down inside Investigation 2 (already the plan in D1, option A).
-
 ### 🟢 Can wait until after the midterm
 
 #### D13. How are plain-language findings generated?
@@ -103,6 +88,8 @@
 |---|---|---|---|
 | — | 9/30 | Database: PostgreSQL | From proposal |
 | — | 9/30 | Data source: HMDA public LAR | From proposal |
+| D1 | 10/18 | Four investigations: (1) A loan like mine (Homebuyer), (2) Market vs. its neighbors, (3) What changed? and (4) Denial patterns (all Analyst). | Rohan, 10/18. Details in `investigations.md`. |
+| D20 | 10/18 | Denial reasons is its own investigation (Investigation 4, Denial patterns), not a drill-down inside Investigation 2. | Rohan, 10/18. Reasons differ more by loan purpose and lender than by county, so it compares per purpose (D19) and by lender. |
 | D2 | 10/10 | Two user types, Homebuyer and Analyst, both as guests with no accounts for now. Admin is not a user type: the yearly data import runs as a script, with no admin screen. | Rohan; team agreed 10/13. Revisit before the final: the final grades user writes, enforced access rules, and a sign-in per user type. Access-rules table in `data-plan.md` updated 10/10. |
 | D3 | 10/10 | Data scope: NJ 2021–2024, and every application whatever its outcome (made, denied, withdrawn, ...), except purchased-loan rows (D16). | Rohan; team agreed 10/13. 1,537,805 rows after D16; 2021 is needed to stay over 1M. |
 | D7 | 10/18 | Project page is a live page on Canvas, edited there by the team. Text and images for it can be drafted in this repo first. | Changed 10/18 (Rohan): the course requires a live Canvas page. Replaces the 10/10 choice of GitHub Pages (team agreed 10/13). |

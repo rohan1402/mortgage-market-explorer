@@ -51,15 +51,16 @@ Access rules must be **enforced in the app** by the final (not just documented).
 
 ## 5. Guided investigations
 
-Research and recommendation: [`docs/investigations.md`](docs/investigations.md). **[OPEN: final pick of 3]**
+Research and details: [`docs/investigations.md`](docs/investigations.md). **Decided 10/18 (D1): four investigations.**
 
-Recommended set (covers all five of the professor's examples inside three workflows, plus one thing no public tool does):
+The set (covers all five of the professor's examples in four investigations, plus one thing no public tool does):
 
 | # | Investigation | Role | Covers professor's example |
 |---|---|---|---|
 | 1 | **A loan like mine:** where is my loan size normal, is it jumbo there, who makes loans like it, and what did people pay | Homebuyer | #1 target loan size, #5 lenders in a market, + pricing (new) |
-| 2 | **Market vs. its neighbors:** how a county differs from the counties next door, in lenders, outcomes and denial reasons | Analyst | #2 neighboring counties, #4 denial reasons, #5 lenders in a market |
+| 2 | **Market vs. its neighbors:** how a county differs from the counties next door, in lenders and outcomes | Analyst | #2 neighboring counties, #5 lenders in a market |
 | 3 | **What changed?** ranked unusual year-over-year shifts for a county or lender | Analyst (watchlist) | #3 unusual changes |
+| 4 | **Denial patterns:** where applications are denied more often, per loan purpose, and what reasons lenders report | Analyst | #4 denial reasons |
 | Stretch | **Neighborhood lending gap:** does a lender reach majority-minority tracts as often as its peers? | Analyst | New |
 
 ## 6. Data

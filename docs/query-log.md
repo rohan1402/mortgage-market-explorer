@@ -41,7 +41,7 @@ Data subsets: load 10k / 100k / full using the same loader with a row limit, so 
   - Inv 1: loan-amount band share by county vs. state (range filter + group by)
   - Inv 1: lender medians of rate / costs for similar loans (percentile_cont)
   - Inv 2: county vs. neighbors across many measures (adjacency join, conditional aggregation)
-  - Inv 2: denial reason shares (denial table join vs. four columns)
+  - Inv 4: denial reason shares (denial table join vs. four columns)
   - Inv 3: year-over-year changes with LAG() — summary table vs. raw aggregation
   - Stretch: lender vs. peer share in majority-minority tracts
 -->
