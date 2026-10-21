@@ -47,11 +47,11 @@ Still open: D4, D5, D8, D12–D15, D18 ([open decisions](docs/open-decisions.md)
 _Filled in automatically on every push to `main`. Run `scripts/status.sh` to see this brief in your terminal._
 <!-- activity:start -->
 
+- 2026-10-21 · Muchtime · Merged PR #8: Update standalone demo with shared data adapter and URL filters
 - 2026-10-20 · Muchtime · Merged PR #7: Add standalone mortgage market explorer demo
 - 2026-10-18 · Rohan Pant · Merged PR #6
 - 2026-10-18 · Rohan Pant · Merged PR #3: Docs: complete ERD, design alternatives, 10/16 meeting and owners
 - 2026-10-18 · Rohan Pant · Merged PR #5: Midterm page draft, viewable on GitHub
-- 2026-10-18 · Rohan Pant · Merged PR #4: Project page is a live Canvas page (D7)
 
 <!-- activity:end -->
 
