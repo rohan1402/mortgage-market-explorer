@@ -1,0 +1,581 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mortgage Market Explorer - screens</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&amp;family=Public+Sans:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;background:#F3F5F4}
+.tab{color:#56636B;text-decoration:none;padding:10px 12px;border-radius:8px;font-size:15px;font-weight:500;min-height:44px;box-sizing:border-box;display:inline-flex;align-items:center}
+.tab:hover{color:#142026;background:#F3F5F4}
+.pick{text-decoration:none;color:#142026}
+.pick:hover{border-color:#142026 !important;color:#142026}
+.go{text-decoration:none}
+.go:hover{text-decoration:underline}
+a{color:#2F6E80}
+a:hover{color:#142026}
+.chip{cursor:pointer;transition:background .15s,color .15s}
+.chip:hover{border-color:#142026 !important}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid #2F6E80;outline-offset:2px}
+.seg{cursor:pointer}
+.seg:hover{border-color:#142026 !important}
+.cty{cursor:pointer;stroke:#FFFFFF;stroke-width:1.2;stroke-linejoin:round;transition:fill .3s,opacity .3s}
+.dim{opacity:.32}
+.pinline{fill:none;stroke:#142026;stroke-width:2.4;stroke-linejoin:round;pointer-events:none}
+.glow{fill:#E8A23A;fill-opacity:.22;stroke:#E8A23A;stroke-width:3;stroke-linejoin:round;pointer-events:none;filter:drop-shadow(0 0 4px rgba(232,162,58,.95)) drop-shadow(0 0 12px rgba(232,162,58,.65))}
+.nbrow{cursor:pointer}
+.nbrow:hover:enabled{background:#F3F5F4 !important}
+.nbrow:disabled{cursor:default;color:#142026}
+.clear{cursor:pointer}
+.clear:hover{color:#142026 !important}
+.prow{cursor:default}
+
+/* Small additions only: keep the supplied page typography, maps and spacing. */
+.screen-tools{display:flex;align-items:center;gap:10px;margin-left:auto;flex-wrap:wrap;font:13px 'Public Sans',system-ui,sans-serif}
+.settings-button,.custom-loan-form input{font:inherit;border:1px solid #D9DFDD;border-radius:8px;background:#fff;color:#142026;padding:9px 12px;min-height:44px;box-sizing:border-box}
+.settings-button{cursor:pointer;font-family:'Public Sans',system-ui,sans-serif;font-size:14px}
+.settings-button:hover{background:#E4EEF0}
+.custom-loan-form{display:flex;align-items:center;flex-wrap:wrap;gap:10px;width:100%;font:15px 'Public Sans',system-ui,sans-serif}
+.custom-loan-form input{width:165px}
+.empty-message:empty{display:none}.empty-message{font:15px 'Public Sans',system-ui,sans-serif;color:#56636B}
+
+#screenSettings::backdrop{background:#14202626}.settings-heading{display:flex;align-items:center;justify-content:space-between;gap:12px}.settings-heading h2{font:500 25px 'Newsreader',Georgia,serif;margin:0}
+
+#screenSettings p{font-size:12px;color:#56636B}.download-section{border-top:1px solid #D9DFDD;margin-top:24px;padding-top:14px}
+@media(max-width:600px){.screen-tools{width:100%;justify-content:flex-end}.custom-loan-form input{max-width:48vw}}
+
+
+.view-status{font:13px 'Public Sans',system-ui,sans-serif;color:#56636B;text-align:right}
+.about-link{display:inline-flex;align-items:center;justify-content:center;min-height:44px;font:14px 'Public Sans',system-ui,sans-serif;color:#2F6E80;background:none;border:0;padding:0 8px;cursor:pointer;text-decoration:underline}
+.county-labels{pointer-events:none;font:600 11.5px 'Public Sans',sans-serif;fill:#142026;stroke:white;stroke-width:3px;paint-order:stroke;stroke-linejoin:round}
+.cty:focus-visible{outline:none;stroke:#142026;stroke-width:4px;filter:drop-shadow(0 0 3px white);opacity:1}
+
+
+
+.reason-toggle{display:flex;flex-wrap:wrap;gap:8px}.reason-toggle [aria-pressed="true"]{background:#E4EEF0;border-color:#2F6E80}
+#aboutData::backdrop{background:#14202626}
+.data-badge{font:11px 'Public Sans',system-ui,sans-serif;color:#56636B;background:#E4EEF0;border-radius:5px;padding:4px 6px;white-space:nowrap}
+.filter-summary{font:14px/1.6 'Public Sans',system-ui,sans-serif;color:#56636B;width:100%}
+.shared-footer,.definition-footer{font:13px/1.6 'Public Sans',system-ui,sans-serif;color:#56636B;margin:0;width:100%}
+#screenSettings,#aboutData,#filterDialog{position:fixed;inset:16px 16px auto auto;margin:0;width:380px;max-width:calc(100vw - 32px);max-height:calc(100dvh - 32px);overflow:auto;box-sizing:border-box;padding:24px;border:1px solid #D9DFDD;border-radius:14px;background:#fff;color:#142026;box-shadow:0 16px 60px #14202626;font:14px/1.6 'Public Sans',system-ui,sans-serif}
+#filterDialog::backdrop{background:#14202626}#globalFilters label{display:flex;flex-direction:column;gap:6px;margin:16px 0}#globalFilters input,#globalFilters select{font:14px 'Public Sans',system-ui,sans-serif;min-height:44px;border:1px solid #D9DFDD;border-radius:8px;padding:8px 12px;box-sizing:border-box;width:100%;background:white;color:#142026}
+@media(min-width:1100px) and (max-width:1399px){header>div{flex-wrap:nowrap!important;gap:6px!important;padding-left:12px!important;padding-right:12px!important}header>div>a{flex:0 1 150px}header nav{flex-wrap:nowrap!important;gap:0!important}header .tab{padding-left:5px;padding-right:5px}header .screen-tools{flex-wrap:nowrap;gap:5px}header .settings-button{padding-left:7px;padding-right:7px}header .about-link{padding:0 3px}header .view-status{max-width:55px}header .data-badge{white-space:normal;max-width:75px}}
+
+</style>
+</head>
+<body>
+<div id="app"></div>
+<dialog id="screenSettings" aria-labelledby="screenSettingsTitle"><div class="settings-heading"><h2 id="screenSettingsTitle">Download data</h2><button class="settings-button" data-close-dialog="screenSettings" aria-label="Close downloads">✕</button></div><section class="download-section"><p>Download this page’s figures and active conditions.</p><button class="settings-button" data-download="json">JSON</button> <button class="settings-button" data-download="csv">CSV</button><p id="downloadStatus" role="status"></p></section></dialog>
+<dialog id="filterDialog" aria-labelledby="filterTitle"><div class="settings-heading"><h2 id="filterTitle">Data settings</h2><button class="settings-button" data-close-dialog="filterDialog" aria-label="Close filters">✕</button></div><form id="globalFilters"></form></dialog><dialog id="aboutData" aria-labelledby="aboutDataTitle"><div class="settings-heading"><h2 id="aboutDataTitle">About this data</h2><button class="settings-button" data-close-dialog="aboutData" aria-label="Close about this data">✕</button></div><p id="aboutSource"></p><p id="aboutDefinition"></p></dialog>
+<template id="tpl-start" data-title="Start"><div style="background: #F3F5F4; color: #142026; font-family: 'Public Sans', system-ui, sans-serif"><header style="background: #FFFFFF; border-bottom: 1px solid #D9DFDD"><div style="max-width: 1200px; margin: 0 auto; padding: 10px 24px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 28px"><a href="#start" style="font-family: 'Newsreader', Georgia, serif; font-size: 21px; font-weight: 600; text-decoration: none; color: #142026; min-height: 44px; display: inline-flex; align-items: center">Mortgage Market Explorer</a><nav aria-label="Investigations" style="display: flex; flex-wrap: wrap; gap: 2px; flex: 1 1 auto"><a href="#loan" class="tab">A loan like mine</a><a href="#map" class="tab">Market vs. its neighbors</a><a href="#changes" class="tab">What changed?</a><a href="#denials" class="tab">Denial patterns</a></nav><div class="screen-tools"><span class="view-status">Guest</span><span class="data-badge">{{dataBadge}}</span><button type="button" class="settings-button" data-screen-action="filters">Filters</button><button type="button" class="settings-button" data-screen-action="download">Download</button><a class="about-link" href="#about-data" data-screen-action="about">About data</a></div></div></header><main style="max-width: 1200px; margin: 0 auto; padding: 56px 24px 64px; box-sizing: border-box; display: flex; flex-wrap: wrap; gap: 48px; align-items: center"><div class="filter-summary">{{filterSummary}}</div><div style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 32px"><div style="display: flex; flex-direction: column; gap: 16px"><h1 style="margin: 0; font-family: 'Newsreader', Georgia, serif; font-size: 52px; line-height: 1.08; font-weight: 500; letter-spacing: -0.5px; max-width: 640px">What do you want to know about home loans in New Jersey?</h1><p style="margin: 0; font-size: 18px; line-height: 1.55; color: #56636B; max-width: 560px">Explore how loan sizes, denials and lending change county by county in New Jersey.</p></div><div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px"><a href="#loan" class="pick" style="display: flex; flex-direction: column; gap: 10px; padding: 24px; background: #FFFFFF; border: 1px solid #D9DFDD; border-radius: 12px"><span style="font-size: 13px; font-weight: 600; letter-spacing: 0.6px; text-transform: uppercase; color: #56636B">For homebuyers</span><span style="font-family: 'Newsreader', Georgia, serif; font-size: 28px; font-weight: 500">I'm buying a home</span><span style="font-size: 16px; line-height: 1.5; color: #56636B">Tell us roughly how much you want to borrow. See where loans that size get made, and who makes them.</span><span style="margin-top: 6px; font-size: 15px; font-weight: 600; color: #2F6E80">Start with your loan amount</span></a><div style="display: flex; flex-direction: column; gap: 10px; padding: 24px; background: #FFFFFF; border: 1px solid #D9DFDD; border-radius: 12px"><span style="font-size: 13px; font-weight: 600; letter-spacing: 0.6px; text-transform: uppercase; color: #56636B">For researchers</span><span style="font-family: 'Newsreader', Georgia, serif; font-size: 28px; font-weight: 500">I study the market</span><div style="display: flex; flex-direction: column; margin-top: 2px"><a href="#map" class="go" style="font-size: 16px; font-weight: 500; color: #2F6E80; min-height: 44px; display: flex; align-items: center; border-bottom: 1px solid #ECEFEE">How does each county compare with its neighbors?</a><a href="#changes" class="go" style="font-size: 16px; font-weight: 500; color: #2F6E80; min-height: 44px; display: flex; align-items: center; border-bottom: 1px solid #ECEFEE">What changed from {{firstYear}} to {{lastYear}}?</a><a href="#denials" class="go" style="font-size: 16px; font-weight: 500; color: #2F6E80; min-height: 44px; display: flex; align-items: center">Where are loans turned down most?</a></div></div></div><p style="font-size:13px;color:#56636B;margin:0">{{startDataNote}}</p></div><div style="flex: 1 1 300px; min-width: 0; display: flex; justify-content: center"><svg viewBox="0 0 420 776" aria-hidden="true" style="width: 100%; max-width: 330px; height: auto; display: block; background: #DCE7EC; border-radius: 16px"><path fill="#E9ECEA" d="{{geo.g0}}"></path><path fill="#E9ECEA" d="{{geo.g1}}"></path><path fill="#E9ECEA" d="{{geo.g2}}"></path><g fill="#BCD6DC" stroke="#FFFFFF" stroke-width="1.2" stroke-linejoin="round"><path d="{{geo.g3}}"></path><path d="{{geo.g4}}"></path><path d="{{geo.g5}}"></path><path d="{{geo.g6}}"></path><path d="{{geo.g7}}"></path><path d="{{geo.g8}}"></path><path d="{{geo.g9}}"></path><path d="{{geo.g10}}"></path><path d="{{geo.g11}}"></path><path d="{{geo.g12}}"></path><path d="{{geo.g13}}"></path><path d="{{geo.g14}}"></path><path d="{{geo.g15}}"></path><path d="{{geo.g16}}"></path><path d="{{geo.g17}}"></path><path d="{{geo.g18}}"></path><path d="{{geo.g19}}"></path><path d="{{geo.g20}}"></path><path d="{{geo.g21}}"></path><path d="{{geo.g22}}"></path><path d="{{geo.g23}}"></path></g><path fill="none" stroke="#2F6E80" stroke-width="1.4" stroke-linejoin="round" d="{{geo.g24}}"></path><g fill="#142026" font-family="Public Sans, sans-serif" font-size="13" font-weight="600" stroke="#FFFFFF" stroke-width="3" paint-order="stroke" stroke-linejoin="round"><circle cx="342" cy="205" r="3.5"></circle><text x="300" y="196" text-anchor="end">Newark</text><circle cx="204" cy="364" r="3.5"></circle><text x="196" y="368" text-anchor="end">Trenton</text><circle cx="284" cy="628" r="3.5"></circle><text x="292" y="640">Atlantic City</text></g><g fill="#56636B" font-family="Public Sans, sans-serif" font-size="11" font-weight="600" letter-spacing="1.5"><text x="22" y="330">PENNSYLVANIA</text><text x="268" y="36">NEW YORK</text></g><text x="318" y="700" fill="#56636B" font-family="Newsreader, Georgia, serif" font-size="14" font-style="italic">Atlantic Ocean</text></svg></div><p class="shared-footer">{{sourceNote}} {{asOf}}</p><p class="definition-footer">{{denialDefinition}}</p></main></div></template><template id="tpl-loan" data-title="A loan like mine"><div style="background: #F3F5F4; color: #142026; font-family: 'Public Sans', system-ui, sans-serif"><header style="background: #FFFFFF; border-bottom: 1px solid #D9DFDD"><div style="max-width: 1200px; margin: 0 auto; padding: 10px 24px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 28px"><a href="#start" style="font-family: 'Newsreader', Georgia, serif; font-size: 21px; font-weight: 600; text-decoration: none; color: #142026; min-height: 44px; display: inline-flex; align-items: center">Mortgage Market Explorer</a><nav aria-label="Investigations" style="display: flex; flex-wrap: wrap; gap: 2px; flex: 1 1 auto"><a href="#loan" class="tab" aria-current="page" style="color: #142026; background: #E4EEF0">A loan like mine</a><a href="#map" class="tab">Market vs. its neighbors</a><a href="#changes" class="tab">What changed?</a><a href="#denials" class="tab">Denial patterns</a></nav><div class="screen-tools"><span class="view-status">Homebuyer view</span><span class="data-badge">{{dataBadge}}</span><button type="button" class="settings-button" data-screen-action="filters">Filters</button><button type="button" class="settings-button" data-screen-action="download">Download</button><a class="about-link" href="#about-data" data-screen-action="about">About data</a></div></div></header><main style="max-width: 1200px; margin: 0 auto; padding: 48px 24px 56px; box-sizing: border-box; display: flex; flex-direction: column; gap: 40px"><div class="filter-summary">{{filterSummary}}</div><div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px 14px; font-family: 'Newsreader', Georgia, serif; font-size: 34px; line-height: 1.25"><span>I want to borrow about</span><div role="group" aria-label="Loan amount" style="display: flex; flex-wrap: wrap; gap: 8px"><sc-for list="{{amounts}}" as="a" hint-placeholder-count="3"><button type="button" class="chip" onClick="{{a.pick}}" aria-pressed="{{a.on}}" style="font-family: 'Public Sans', system-ui, sans-serif; font-size: 20px; font-weight: 600; min-height: 48px; padding: 8px 20px; border-radius: 999px; border: 1.5px solid {{a.bd}}; background: {{a.bg}}; color: {{a.fg}}">{{a.label}}</button></sc-for><button type="button" class="chip" data-screen-action="other" aria-pressed="{{custom}}" style="font-family: 'Public Sans', system-ui, sans-serif; font-size:20px; font-weight:600; min-height:48px; padding:8px 20px; border-radius:999px; border:1.5px solid #B8C3C1; background:{{otherBg}};color:{{otherFg}}">Other</button></div><span>for {{purposeLower}}.</span><sc-if value="{{custom}}"><form id="customLoanForm" class="custom-loan-form"><label for="customLoanAmount">Loan amount ($)</label><input id="customLoanAmount" type="number" min="1000" max="10000000" step="1" value="{{customAmount}}" required><button type="submit" class="settings-button">Apply</button></form></sc-if></div><sc-if value="{{noResults}}"><p class="empty-message">{{emptyMessage}}</p></sc-if><sc-if value="{{hasResults}}"><div style="display: flex; flex-wrap: wrap; gap: 48px; align-items: flex-start"><div style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 40px"><section style="display: flex; flex-direction: column; gap: 10px"><p style="margin: 0; font-size: 15px; font-weight: 600; color: #56636B">Most loans this size were made in</p><p style="margin: 0; font-family: 'Newsreader', Georgia, serif; font-size: 64px; line-height: 1; font-weight: 500; letter-spacing: -0.5px">{{topLabel}}</p><p style="margin: 6px 0 0; font-size: 18px; line-height: 1.55; color: #33424A; max-width: 620px">{{answer}}</p></section><section aria-labelledby="where-h" style="display: flex; flex-direction: column; gap: 14px"><h2 id="where-h" style="margin: 0; font-size: 15px; font-weight: 600; color: #56636B">Where loans this size were made in {{year}}</h2><p class="empty-message">{{emptyMessage}}</p><ol style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 12px"><sc-for list="{{rows}}" as="r" hint-placeholder-count="5"><li style="display: grid; grid-template-columns: 28px minmax(110px, 160px) minmax(0, 1fr) 72px; align-items: center; gap: 12px"><span style="width: 26px; height: 26px; border-radius: 50%; background: {{r.dot}}; color: #FFFFFF; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center">{{r.rank}}</span><span style="font-size: 16px; font-weight: 600">{{r.name}}</span><span style="height: 12px; background: #E1E8E8; border-radius: 6px; overflow: hidden; display: block"><span style="display: block; height: 12px; width: {{r.w}}%; background: {{r.dot}}; border-radius: 6px"></span></span><span style="font-size: 15px; font-variant-numeric: tabular-nums; text-align: right">{{r.loans}}</span></li></sc-for></ol><p style="margin: 0; font-size: 14px; color: #56636B">Number of {{purposeLower}} loans within {{tolerance}}% of {{amountLabel}}.</p></section><sc-if value="{{hasResults}}"><section aria-labelledby="who-h" style="display: flex; flex-direction: column; gap: 12px; padding: 24px; background: #FFFFFF; border: 1px solid #D9DFDD; border-radius: 12px"><h2 id="who-h" style="margin: 0; font-size: 15px; font-weight: 600; color: #56636B">Who made the most of them in {{top.name}}</h2><div style="display: flex; flex-direction: column"><sc-for list="{{lenders}}" as="l" hint-placeholder-count="3"><div style="display: flex; justify-content: space-between; gap: 16px; padding: 12px 0; border-bottom: 1px solid #ECEFEE; font-size: 17px"><span style="font-weight: 600">{{l.name}}</span><span style="color: #56636B; font-variant-numeric: tabular-nums">{{l.loans}} loans</span></div></sc-for></div><p style="margin: 0; font-size: 14px; color: #56636B">{{lenderMessage}} This shows who lent the most, not who gives the best deal.</p></section></sc-if></div><figure style="flex: 1 1 280px; min-width: 0; margin: 0; display: flex; flex-direction: column; align-items: center; gap: 12px"><svg viewBox="0 0 420 776" role="img" aria-label="{{mapLabel}}" style="width: 100%; max-width: 300px; height: auto; display: block"><g stroke="#FFFFFF" stroke-width="1.4" stroke-linejoin="round"><path class="cty" fill="{{fills.c34001}}" d="{{geo.g3}}"></path><path class="cty" fill="{{fills.c34003}}" d="{{geo.g4}}"></path><path class="cty" fill="{{fills.c34005}}" d="{{geo.g5}}"></path><path class="cty" fill="{{fills.c34007}}" d="{{geo.g6}}"></path><path class="cty" fill="{{fills.c34009}}" d="{{geo.g7}}"></path><path class="cty" fill="{{fills.c34011}}" d="{{geo.g8}}"></path><path class="cty" fill="{{fills.c34013}}" d="{{geo.g9}}"></path><path class="cty" fill="{{fills.c34015}}" d="{{geo.g10}}"></path><path class="cty" fill="{{fills.c34017}}" d="{{geo.g11}}"></path><path class="cty" fill="{{fills.c34019}}" d="{{geo.g12}}"></path><path class="cty" fill="{{fills.c34021}}" d="{{geo.g13}}"></path><path class="cty" fill="{{fills.c34023}}" d="{{geo.g14}}"></path><path class="cty" fill="{{fills.c34025}}" d="{{geo.g15}}"></path><path class="cty" fill="{{fills.c34027}}" d="{{geo.g16}}"></path><path class="cty" fill="{{fills.c34029}}" d="{{geo.g17}}"></path><path class="cty" fill="{{fills.c34031}}" d="{{geo.g18}}"></path><path class="cty" fill="{{fills.c34033}}" d="{{geo.g19}}"></path><path class="cty" fill="{{fills.c34035}}" d="{{geo.g20}}"></path><path class="cty" fill="{{fills.c34037}}" d="{{geo.g21}}"></path><path class="cty" fill="{{fills.c34039}}" d="{{geo.g22}}"></path><path class="cty" fill="{{fills.c34041}}" d="{{geo.g23}}"></path></g><g font-family="Public Sans, sans-serif" font-size="15" font-weight="700" text-anchor="middle"><g transform="translate({{b1.x}} {{b1.y}})"><circle r="14" fill="#142026" stroke="#FFFFFF" stroke-width="2.5"></circle><text y="5.5" fill="#FFFFFF">1</text></g><g transform="translate({{b2.x}} {{b2.y}})"><circle r="14" fill="#FFFFFF" stroke="#142026" stroke-width="2"></circle><text y="5.5" fill="#142026">2</text></g><g transform="translate({{b3.x}} {{b3.y}})"><circle r="14" fill="#FFFFFF" stroke="#142026" stroke-width="2"></circle><text y="5.5" fill="#142026">3</text></g><g transform="translate({{b4.x}} {{b4.y}})"><circle r="14" fill="#FFFFFF" stroke="#142026" stroke-width="2"></circle><text y="5.5" fill="#142026">4</text></g><g transform="translate({{b5.x}} {{b5.y}})"><circle r="14" fill="#FFFFFF" stroke="#142026" stroke-width="2"></circle><text y="5.5" fill="#142026">5</text></g></g></svg><figcaption style="font-size: 14px; color: #56636B; text-align: center">Top {{shownCount}} eligible counties for this loan size</figcaption></figure></div></sc-if><p style="margin: 0; padding-top: 20px; border-top: 1px solid #D9DFDD; font-size: 14px; line-height: 1.5; color: #56636B">{{sourceNote}} {{asOf}}</p><p class="definition-footer">{{denialDefinition}}</p></main></div></template><template id="tpl-map" data-title="Market vs. its neighbors"><div style="background: #F3F5F4; color: #142026; font-family: 'Public Sans', system-ui, sans-serif"><header style="background: #FFFFFF; border-bottom: 1px solid #D9DFDD"><div style="max-width: 1200px; margin: 0 auto; padding: 10px 24px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 28px"><a href="#start" style="font-family: 'Newsreader', Georgia, serif; font-size: 21px; font-weight: 600; text-decoration: none; color: #142026; min-height: 44px; display: inline-flex; align-items: center">Mortgage Market Explorer</a><nav aria-label="Investigations" style="display: flex; flex-wrap: wrap; gap: 2px; flex: 1 1 auto"><a href="#loan" class="tab">A loan like mine</a><a href="#map" class="tab" aria-current="page" style="color: #142026; background: #E4EEF0">Market vs. its neighbors</a><a href="#changes" class="tab">What changed?</a><a href="#denials" class="tab">Denial patterns</a></nav><div class="screen-tools"><span class="view-status">Analyst view</span><span class="data-badge">{{dataBadge}}</span><button type="button" class="settings-button" data-screen-action="filters">Filters</button><button type="button" class="settings-button" data-screen-action="download">Download</button><a class="about-link" href="#about-data" data-screen-action="about">About data</a></div></div></header><main style="max-width: 1200px; margin: 0 auto; padding: 40px 24px 56px; box-sizing: border-box; display: flex; flex-direction: column; gap: 32px"><div class="filter-summary">{{filterSummary}}</div><div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 20px 32px"><div style="flex: 1 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 10px"><h1 style="margin: 0; font-family: 'Newsreader', Georgia, serif; font-size: 40px; line-height: 1.12; font-weight: 500; letter-spacing: -0.3px; max-width: 640px">How does each county compare with the ones next to it?</h1><p style="margin: 0; font-size: 17px; line-height: 1.5; color: #56636B">Hover over a county to see its numbers. Click one to line it up against its neighbors.</p></div><div role="group" aria-label="What to show on the map" style="display: flex; flex-wrap: wrap; gap: 8px"><sc-for list="{{measures}}" as="s" hint-placeholder-count="3"><button type="button" class="seg" onClick="{{s.pick}}" aria-pressed="{{s.on}}" style="font-family: 'Public Sans', system-ui, sans-serif; font-size: 15px; font-weight: 600; min-height: 44px; padding: 8px 16px; border-radius: 999px; border: 1.5px solid {{s.bd}}; background: {{s.bg}}; color: {{s.fg}}">{{s.label}}</button></sc-for></div></div><div style="display: flex; flex-wrap: wrap; gap: 40px; align-items: flex-start"><figure style="flex: 1 1 380px; max-width: 420px; min-width: 0; margin: 0; display: flex; flex-direction: column; gap: 16px"><div style="position: relative"><svg viewBox="0 0 420 776" role="group" aria-label="{{mapLabel}}" onMouseLeave="{{leave}}" style="width: 100%; height: auto; display: block; background: #DCE7EC; border-radius: 14px"><g fill="#E9ECEA" style="pointer-events: none"><path d="{{geo.g0}}"></path><path d="{{geo.g1}}"></path><path d="{{geo.g2}}"></path></g><g fill="#56636B" font-family="Public Sans, sans-serif" font-size="11" font-weight="600" letter-spacing="1.5" style="pointer-events: none"><text x="22" y="330">PENNSYLVANIA</text><text x="268" y="36">NEW YORK</text></g><g fill="#56636B" font-family="Newsreader, Georgia, serif" font-size="14" font-style="italic" style="pointer-events: none"><text x="300" y="700">Atlantic Ocean</text><text x="78" y="722">Delaware Bay</text></g><path tabindex="0" role="button" aria-label="{{names.c34001}}" aria-pressed="{{pressed.c34001}}" onFocus="{{enter.c34001}}" onBlur="{{leave}}" onMouseLeave="{{leave}}" onKeyDown="{{keys.c34001}}" class="{{cl.c34001}}" fill="{{fills.c34001}}" onMouseEnter="{{enter.c34001}}" onClick="{{pick.c34001}}" d="{{geo.g3}}"></path><path tabindex="0" role="button" aria-label="{{names.c34003}}" aria-pressed="{{pressed.c34003}}" onFocus="{{enter.c34003}}" onBlur="{{leave}}" onMouseLeave="{{leave}}" onKeyDown="{{keys.c34003}}" class="{{cl.c34003}}" fill="{{fills.c34003}}" onMouseEnter="{{enter.c34003}}" onClick="{{pick.c34003}}" d="{{geo.g4}}"></path><path tabindex="0" role="button" aria-label="{{names.c34005}}" aria-pressed="{{pressed.c34005}}" onFocus="{{enter.c34005}}" onBlur="{{leave}}" onMouseLeave="{{leave}}" onKeyDown="{{keys.c34005}}" class="{{cl.c34005}}" fill="{{fills.c34005}}" onMouseEnter="{{enter.c34005}}" onClick="{{pick.c34005}}" d="{{geo.g5}}"></path><path tabindex="0" role="button" aria-label="{{names.c34007}}" aria-pressed="{{pressed.c34007}}" onFocus="{{enter.c34007}}" onBlur="{{leave}}" onMouseLeave="{{leave}}" onKeyDown="{{keys.c34007}}" class="{{cl.c34007}}" fill="{{fills.c34007}}" onMouseEnter="{{enter.c34007}}" onClick="{{pick.c34007}}" d="{{geo.g6}}"></path><path tabindex="0" role="button" aria-label="{{names.c34009}}" aria-pressed="{{pressed.c34009}}" onFocus="{{enter.c34009}}" onBlur="{{leave}}" onMouseLeave="{{leave}}" onKeyDown="{{keys.c34009}}" class="{{cl.c34009}}" fill="{{fills.c34009}}" onMouseEnter="{{enter.c34009}}" onClick="{{pick.c34009}}" d="{{geo.g7}}"></path><path tabindex="0" role="button" aria-label="{{names.c34011}}" aria-pressed="{{pressed.c34011}}" onFocus="{{enter.c34011}}" onBlur="{{leave}}" onMouseLeave="{{leave}}" onKeyDown="{{keys.c34011}}" class="{{cl.c34011}}" fill="{{fills.c34011}}" onMouseEnter="{{enter.c34011}}" onClick="{{pick.c34011}}" d="{{geo.g8}}"></path><path tabindex="0" role="button" aria-label="{{names.c34013}}" aria-pressed="{{pressed.c34013}}" onFocus="{{enter.c34013}}" onBlur="{{leave}}" onMouseLeave="{{leave}}" onKeyDown="{{keys.c34013}}" class="{{cl.c34013}}" fill="{{fills.c34013}}" onMouseEnter="{{enter.c34013}}" onClick="{{pick.c34013}}" d="{{geo.g9}}"></path><path tabindex="0" role="button" aria-label="{{names.c34015}}" aria-pressed="{{pressed.c34015}}" onFocus="{{enter.c34015}}" onBlur="{{leave}}" onMouseLeave="{{leave}}" onKeyDown="{{keys.c34015}}" class="{{cl.c34015}}" fill="{{fills.c34015}}" onMouseEnter="{{enter.c34015}}" onClick="{{pick.c34015}}" d="{{geo.g10}}"></path><path tabindex="0" role="button" aria-label="{{names.c34017}}" aria-pressed="{{pressed.c34017}}" onFocus="{{enter.c34017}}" onBlur="{{leave}}" onMouseLeave="{{leave}}" onKeyDown="{{keys.c34017}}" class="{{cl.c34017}}" fill="{{fills.c34017}}" onMouseEnter="{{enter.c34017}}" onClick="{{pick.c34017}}" d="{{geo.g11}}"></path><path tabindex="0" role="button" aria-label="{{names.c34019}}" aria-pressed="{{pressed.c34019}}" onFocus="{{enter.c34019}}" onBlur="{{leave}}" onMouseLeave="{{leave}}" onKeyDown="{{keys.c34019}}" class="{{cl.c34019}}" fill="{{fills.c34019}}" onMouseEnter="{{enter.c34019}}" onClick="{{pick.c34019}}" d="{{geo.g12}}"></path><path tabindex="0" role="button" aria-label="{{names.c34021}}" aria-pressed="{{pressed.c34021}}" onFocus="{{enter.c34021}}" onBlur="{{leave}}" onMouseLeave="{{leave}}" onKeyDown="{{keys.c34021}}" class="{{cl.c34021}}" fill="{{fills.c34021}}" onMouseEnter="{{enter.c34021}}" onClick="{{pick.c34021}}" d="{{geo.g13}}"></path><path tabindex="0" role="button" aria-label="{{names.c34023}}" aria-pressed="{{pressed.c34023}}" onFocus="{{enter.c34023}}" onBlur="{{leave}}" onMouseLeave="{{leave}}" onKeyDown="{{keys.c34023}}" class="{{cl.c34023}}" fill="{{fills.c34023}}" onMouseEnter="{{enter.c34023}}" onClick="{{pick.c34023}}" d="{{geo.g14}}"></path><path tabindex="0" role="button" aria-label="{{names.c34025}}" aria-pressed="{{pressed.c34025}}" onFocus="{{enter.c34025}}" onBlur="{{leave}}" onMouseLeave="{{leave}}" onKeyDown="{{keys.c34025}}" class="{{cl.c34025}}" fill="{{fills.c34025}}" onMouseEnter="{{enter.c34025}}" onClick="{{pick.c34025}}" d="{{geo.g15}}"></path><path tabindex="0" role="button" aria-label="{{names.c34027}}" aria-pressed="{{pressed.c34027}}" onFocus="{{enter.c34027}}" onBlur="{{leave}}" onMouseLeave="{{leave}}" onKeyDown="{{keys.c34027}}" class="{{cl.c34027}}" fill="{{fills.c34027}}" onMouseEnter="{{enter.c34027}}" onClick="{{pick.c34027}}" d="{{geo.g16}}"></path><path tabindex="0" role="button" aria-label="{{names.c34029}}" aria-pressed="{{pressed.c34029}}" onFocus="{{enter.c34029}}" onBlur="{{leave}}" onMouseLeave="{{leave}}" onKeyDown="{{keys.c34029}}" class="{{cl.c34029}}" fill="{{fills.c34029}}" onMouseEnter="{{enter.c34029}}" onClick="{{pick.c34029}}" d="{{geo.g17}}"></path><path tabindex="0" role="button" aria-label="{{names.c34031}}" aria-pressed="{{pressed.c34031}}" onFocus="{{enter.c34031}}" onBlur="{{leave}}" onMouseLeave="{{leave}}" onKeyDown="{{keys.c34031}}" class="{{cl.c34031}}" fill="{{fills.c34031}}" onMouseEnter="{{enter.c34031}}" onClick="{{pick.c34031}}" d="{{geo.g18}}"></path><path tabindex="0" role="button" aria-label="{{names.c34033}}" aria-pressed="{{pressed.c34033}}" onFocus="{{enter.c34033}}" onBlur="{{leave}}" onMouseLeave="{{leave}}" onKeyDown="{{keys.c34033}}" class="{{cl.c34033}}" fill="{{fills.c34033}}" onMouseEnter="{{enter.c34033}}" onClick="{{pick.c34033}}" d="{{geo.g19}}"></path><path tabindex="0" role="button" aria-label="{{names.c34035}}" aria-pressed="{{pressed.c34035}}" onFocus="{{enter.c34035}}" onBlur="{{leave}}" onMouseLeave="{{leave}}" onKeyDown="{{keys.c34035}}" class="{{cl.c34035}}" fill="{{fills.c34035}}" onMouseEnter="{{enter.c34035}}" onClick="{{pick.c34035}}" d="{{geo.g20}}"></path><path tabindex="0" role="button" aria-label="{{names.c34037}}" aria-pressed="{{pressed.c34037}}" onFocus="{{enter.c34037}}" onBlur="{{leave}}" onMouseLeave="{{leave}}" onKeyDown="{{keys.c34037}}" class="{{cl.c34037}}" fill="{{fills.c34037}}" onMouseEnter="{{enter.c34037}}" onClick="{{pick.c34037}}" d="{{geo.g21}}"></path><path tabindex="0" role="button" aria-label="{{names.c34039}}" aria-pressed="{{pressed.c34039}}" onFocus="{{enter.c34039}}" onBlur="{{leave}}" onMouseLeave="{{leave}}" onKeyDown="{{keys.c34039}}" class="{{cl.c34039}}" fill="{{fills.c34039}}" onMouseEnter="{{enter.c34039}}" onClick="{{pick.c34039}}" d="{{geo.g22}}"></path><path tabindex="0" role="button" aria-label="{{names.c34041}}" aria-pressed="{{pressed.c34041}}" onFocus="{{enter.c34041}}" onBlur="{{leave}}" onMouseLeave="{{leave}}" onKeyDown="{{keys.c34041}}" class="{{cl.c34041}}" fill="{{fills.c34041}}" onMouseEnter="{{enter.c34041}}" onClick="{{pick.c34041}}" d="{{geo.g23}}"></path><path d="{{geo.g24}}" stroke="#5B95A5" stroke-width="1.5" fill="none" pointer-events="none"></path><path class="pinline" d="{{pinD}}"></path><path class="glow" d="{{hoverD}}"></path><g class="county-labels" aria-hidden="true"><sc-for list="{{countyLabels}}" as="county"><text class="{{county.cls}}" x="{{county.x}}" y="{{county.y}}" text-anchor="middle">{{county.name}}</text></sc-for></g></svg><sc-if value="{{tip.show}}" hint-placeholder-val="{{true}}"><div aria-live="polite" style="position: absolute; left: {{tip.l}}%; top: {{tip.t}}%; transform: translate({{tip.tx}}, {{tip.ty}}); width: 232px; box-sizing: border-box; padding: 14px 16px; background: #FFFFFF; border: 1px solid #D9DFDD; border-radius: 10px; box-shadow: 0 10px 28px rgba(20, 32, 38, 0.16); pointer-events: none; display: flex; flex-direction: column; gap: 8px"><span style="font-family: 'Newsreader', Georgia, serif; font-size: 21px; font-weight: 600; line-height: 1.1">{{tip.name}}</span><div style="display: flex; flex-direction: column; gap: 2px"><span style="font-family: 'Newsreader', Georgia, serif; font-size: 34px; font-weight: 500; line-height: 1">{{tip.value}}</span><span style="font-size: 13px; line-height: 1.35; color: #56636B">{{tip.label}}</span></div><span style="align-self: flex-start; font-size: 12px; font-weight: 700; padding: 3px 8px; border-radius: 999px; background: #FBEBD2; color: #6B4508">{{tip.rank}}</span><div style="display: flex; flex-direction: column; gap: 4px; padding-top: 8px; border-top: 1px solid #ECEFEE"><sc-for list="{{tip.others}}" as="o" hint-placeholder-count="2"><div style="display: flex; justify-content: space-between; gap: 8px; font-size: 13px"><span style="color: #56636B">{{o.label}}</span><span style="font-weight: 600; font-variant-numeric: tabular-nums">{{o.value}}</span></div></sc-for></div><span style="font-size: 12px; color: #2F6E80; font-weight: 600">{{tip.hint}}</span></div></sc-if></div><figcaption style="display: flex; flex-direction: column; gap: 8px"><span style="font-size: 14px; font-weight: 600">{{legendTitle}}</span><div style="display: flex; flex-wrap: wrap; gap: 6px 14px"><sc-for list="{{legend}}" as="g" hint-placeholder-count="5"><span style="display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: #33424A; font-variant-numeric: tabular-nums"><span style="width: 14px; height: 14px; border-radius: 3px; background: {{g.col}}; display: inline-block"></span>{{g.text}}</span></sc-for></div></figcaption></figure><aside aria-label="Selected county" style="flex: 999 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 20px; padding: 28px; background: #FFFFFF; border: 1px solid #D9DFDD; border-radius: 14px; box-sizing: border-box"><sc-if value="{{hasPin}}" hint-placeholder-val="{{true}}"><div style="display: flex; flex-direction: column; gap: 20px"><div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap"><h2 style="margin: 0; font-family: 'Newsreader', Georgia, serif; font-size: 34px; font-weight: 500">{{panel.name}} County</h2><button type="button" class="clear" onClick="{{clear}}" style="font-family: inherit; font-size: 14px; font-weight: 600; color: #56636B; background: none; border: none; min-height: 44px; padding: 0 4px">Clear</button></div><p style="margin: 0; font-size: 19px; line-height: 1.5">{{panel.sentence}}</p><div style="display: flex; flex-direction: column; gap: 2px"><p style="margin: 0 0 8px; font-size: 14px; font-weight: 600; color: #56636B">{{panel.title}}</p><sc-for list="{{panel.rows}}" as="r" hint-placeholder-count="6"><button type="button" class="nbrow" onClick="{{r.go}}" disabled="{{r.off}}" style="font-family: inherit; display: grid; grid-template-columns: minmax(96px, 150px) minmax(0, 1fr) 84px; align-items: center; gap: 12px; width: 100%; min-height: 40px; padding: 4px 8px; margin: 0 -8px; box-sizing: content-box; background: transparent; border: none; border-radius: 8px; text-align: left; color: #142026"><span style="font-size: 15px; font-weight: {{r.weight}}">{{r.name}}</span><span style="height: 12px; background: #EEF2F1; border-radius: 6px; overflow: hidden; display: block"><span style="display: block; height: 12px; width: {{r.w}}%; background: {{r.col}}; border-radius: 6px"></span></span><span style="font-size: 15px; font-weight: {{r.weight}}; text-align: right; font-variant-numeric: tabular-nums">{{r.value}}</span></button></sc-for><p style="margin: 8px 0 0; font-size: 13px; color: #56636B">Click a neighbor to move to it.</p></div><div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; padding-top: 18px; border-top: 1px solid #ECEFEE"><div style="display: flex; flex-direction: column; gap: 4px"><span style="font-size: 13px; color: #56636B">Loans made in {{year}}</span><span style="font-size: 20px; font-weight: 600; font-variant-numeric: tabular-nums">{{panel.loans}}</span></div><div style="display: flex; flex-direction: column; gap: 4px"><span style="font-size: 13px; color: #56636B">Most {{purposeLower}} loans</span><span style="font-size: 17px; font-weight: 600">{{panel.top}}</span></div></div></div></sc-if><sc-if value="{{noPin}}" hint-placeholder-val="{{false}}"><div style="display: flex; flex-direction: column; gap: 8px"><h2 style="margin: 0; font-family: 'Newsreader', Georgia, serif; font-size: 30px; font-weight: 500">Pick a county</h2><p style="margin: 0; font-size: 17px; line-height: 1.5; color: #56636B">Click it on the map, or choose it below. We'll put it next to the counties that touch it.</p></div></sc-if><div style="display: flex; flex-direction: column; gap: 6px; padding-top: 4px"><label for="county-pick" style="font-size: 14px; font-weight: 600; color: #56636B">Or choose from the list</label><select id="county-pick" value="{{pinValue}}" onChange="{{onSelect}}" style="font-family: inherit; font-size: 16px; min-height: 44px; padding: 8px 12px; border: 1px solid #B8C3C1; border-radius: 8px; background: #FFFFFF; color: #142026; max-width: 280px"><option value="">Choose a county</option><option data-sc-for="{{options}}" data-sc-as="o" value="{{o.id}}">{{o.name}}</option></select></div></aside></div><p style="margin: 0; padding-top: 20px; border-top: 1px solid #D9DFDD; font-size: 14px; line-height: 1.5; color: #56636B">{{sourceNote}} {{asOf}} {{denialDefinition}} "Next door" pools the counties that share a border. Counties with fewer than {{minSample}} applications are not ranked.</p></main></div></template><template id="tpl-changes" data-title="What changed?"><div style="background: #F3F5F4; color: #142026; font-family: 'Public Sans', system-ui, sans-serif"><header style="background: #FFFFFF; border-bottom: 1px solid #D9DFDD"><div style="max-width: 1200px; margin: 0 auto; padding: 10px 24px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 28px"><a href="#start" style="font-family: 'Newsreader', Georgia, serif; font-size: 21px; font-weight: 600; text-decoration: none; color: #142026; min-height: 44px; display: inline-flex; align-items: center">Mortgage Market Explorer</a><nav aria-label="Investigations" style="display: flex; flex-wrap: wrap; gap: 2px; flex: 1 1 auto"><a href="#loan" class="tab">A loan like mine</a><a href="#map" class="tab">Market vs. its neighbors</a><a href="#changes" class="tab" aria-current="page" style="color: #142026; background: #E4EEF0">What changed?</a><a href="#denials" class="tab">Denial patterns</a></nav><div class="screen-tools"><span class="view-status">Analyst view</span><span class="data-badge">{{dataBadge}}</span><button type="button" class="settings-button" data-screen-action="filters">Filters</button><button type="button" class="settings-button" data-screen-action="download">Download</button><a class="about-link" href="#about-data" data-screen-action="about">About data</a></div></div></header><main style="max-width: 1200px; margin: 0 auto; padding: 40px 24px 56px; box-sizing: border-box; display: flex; flex-direction: column; gap: 32px"><div class="filter-summary">{{filterSummary}}</div><div style="display: flex; flex-direction: column; gap: 10px"><h1 style="margin: 0; font-family: 'Newsreader', Georgia, serif; font-size: 40px; line-height: 1.12; font-weight: 500; letter-spacing: -0.3px">What changed from {{firstYear}} to {{lastYear}}?</h1><p style="margin: 0; font-size: 17px; line-height: 1.5; color: #56636B">{{changesDescription}}</p></div><div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr)); gap: 24px"><sc-for list="{{stories}}" as="story"><article style="display: flex; flex-direction: column; gap: 14px; padding: 28px; background: #FFFFFF; border: 1px solid #D9DFDD; border-radius: 14px"><span style="font-size:13px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;color:#56636B">{{story.eyebrow}}</span><span style="font-family:'Newsreader',Georgia,serif;font-size:60px;line-height:1;font-weight:500">{{story.number}}</span><h2 style="margin:0;font-family:'Newsreader',Georgia,serif;font-size:26px;line-height:1.2;font-weight:500">{{story.title}}</h2><p style="margin:0;font-size:16px;line-height:1.55;color:#33424A">{{story.text}}</p><div data-chart="{{story.chart}}"></div></article></sc-for></div><p style="margin: 0; padding-top: 20px; border-top: 1px solid #D9DFDD; font-size: 14px; line-height: 1.5; color: #56636B">{{sourceNote}} {{asOf}} Applications include ones that were approved, denied, withdrawn or left incomplete. Loans made means the loan actually closed.</p><p class="definition-footer">{{denialDefinition}}</p></main></div></template><template id="tpl-denials" data-title="Denial patterns"><div style="background: #F3F5F4; color: #142026; font-family: 'Public Sans', system-ui, sans-serif"><header style="background: #FFFFFF; border-bottom: 1px solid #D9DFDD"><div style="max-width: 1200px; margin: 0 auto; padding: 10px 24px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 28px"><a href="#start" style="font-family: 'Newsreader', Georgia, serif; font-size: 21px; font-weight: 600; text-decoration: none; color: #142026; min-height: 44px; display: inline-flex; align-items: center">Mortgage Market Explorer</a><nav aria-label="Investigations" style="display: flex; flex-wrap: wrap; gap: 2px; flex: 1 1 auto"><a href="#loan" class="tab">A loan like mine</a><a href="#map" class="tab">Market vs. its neighbors</a><a href="#changes" class="tab">What changed?</a><a href="#denials" class="tab" aria-current="page" style="color: #142026; background: #E4EEF0">Denial patterns</a></nav><div class="screen-tools"><span class="view-status">Analyst view</span><span class="data-badge">{{dataBadge}}</span><button type="button" class="settings-button" data-screen-action="filters">Filters</button><button type="button" class="settings-button" data-screen-action="download">Download</button><a class="about-link" href="#about-data" data-screen-action="about">About data</a></div></div></header><main style="max-width: 1200px; margin: 0 auto; padding: 40px 24px 56px; box-sizing: border-box; display: flex; flex-direction: column; gap: 36px"><div class="filter-summary">{{filterSummary}}</div><div style="display: flex; flex-direction: column; gap: 18px"><h1 style="margin: 0; font-family: 'Newsreader', Georgia, serif; font-size: 40px; line-height: 1.12; font-weight: 500; letter-spacing: -0.3px">Where are home loans turned down most?</h1><div role="group" aria-label="Type of loan" style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px"><span style="font-size: 16px; color: #56636B; margin-right: 4px">Loans for</span><sc-for list="{{purposes}}" as="p" hint-placeholder-count="5"><button type="button" class="chip" onClick="{{p.pick}}" aria-pressed="{{p.on}}" style="font-family: 'Public Sans', system-ui, sans-serif; font-size: 15px; font-weight: 600; min-height: 44px; padding: 8px 16px; border-radius: 999px; border: 1.5px solid {{p.bd}}; background: {{p.bg}}; color: {{p.fg}}">{{p.label}}</button></sc-for></div></div><section style="display: flex; flex-direction: column; gap: 10px"><p style="margin: 0; font-size: 15px; font-weight: 600; color: #56636B">Turned down most often in</p><p style="margin: 0; font-family: 'Newsreader', Georgia, serif; font-size: 64px; line-height: 1; font-weight: 500; letter-spacing: -0.5px">{{d.headline}}</p><p style="margin: 6px 0 0; font-size: 18px; line-height: 1.55; color: #33424A; max-width: 760px">{{d.answer}}</p></section><div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: stretch"><section aria-labelledby="why-h" style="flex: 1 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 16px; padding: 28px; background: #FFFFFF; border: 1px solid #D9DFDD; border-radius: 14px; box-sizing: border-box"><h2 id="why-h" style="margin: 0; font-family: 'Newsreader', Georgia, serif; font-size: 26px; font-weight: 500">Why lenders said no</h2><sc-if value="{{noReasons}}"><p style="font-size:14px;color:#56636B">Not enough denied applications to compare reported reasons.</p></sc-if><div class="reason-toggle" role="group" aria-label="Reason terminology"><button class="settings-button" data-reason-label="plain" aria-pressed="{{plainReasons}}">Plain language</button><button class="settings-button" data-reason-label="reported" aria-pressed="{{reportedReasons}}">Reported terminology</button></div><div style="display: flex; flex-direction: column; gap: 14px"><sc-for list="{{d.reasons}}" as="r" hint-placeholder-count="4"><div style="display: flex; flex-direction: column; gap: 6px"><div style="display: flex; justify-content: space-between; gap: 12px; font-size: 16px"><span>{{r.label}}</span><span style="font-weight: 600; font-variant-numeric: tabular-nums">{{r.share}}</span></div><span style="height: 10px; background: #EEF2F1; border-radius: 5px; overflow: hidden; display: block"><span style="display: block; height: 10px; width: {{r.w}}%; background: {{r.col}}; border-radius: 5px"></span></span></div></sc-for></div><p style="margin: 0; font-size: 13px; line-height: 1.5; color: #56636B">Share of turned-down applications that gave each reason. A lender can give up to four, so these can add up to more than 100%.</p></section><section aria-labelledby="purpose-h" style="flex: 1 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 16px; padding: 28px; background: #FFFFFF; border: 1px solid #D9DFDD; border-radius: 14px; box-sizing: border-box"><h2 id="purpose-h" style="margin: 0; font-family: 'Newsreader', Georgia, serif; font-size: 26px; font-weight: 500">It depends on what the loan is for</h2><div style="display: flex; flex-direction: column; gap: 2px"><sc-for list="{{purposes}}" as="p" hint-placeholder-count="5"><div class="prow" style="font-family: inherit; display: grid; grid-template-columns: minmax(120px, 170px) minmax(0, 1fr) 56px; align-items: center; gap: 12px; width: 100%; min-height: 44px; padding: 4px 8px; margin: 0 -8px; box-sizing: content-box; background: transparent; border: none; border-radius: 8px; text-align: left; color: #142026"><span style="font-size: 15px; font-weight: {{p.weight}}">{{p.label}}</span><span style="height: 12px; background: #EEF2F1; border-radius: 6px; overflow: hidden; display: block"><span style="display: block; height: 12px; width: {{p.w}}%; background: {{p.col}}; border-radius: 6px"></span></span><span style="font-size: 15px; font-weight: {{p.weight}}; text-align: right; font-variant-numeric: tabular-nums">{{p.rate}}</span></div></sc-for></div><p style="margin: 0; font-size: 13px; line-height: 1.5; color: #56636B">Share of applications turned down across New Jersey in {{year}}.</p></section></div><a href="#map" style="align-self: flex-start; font-size: 16px; font-weight: 600; min-height: 44px; display: inline-flex; align-items: center">Compare {{purposeLower}} denials county by county on the map</a><p style="margin: 0; padding-top: 20px; border-top: 1px solid #D9DFDD; font-size: 14px; line-height: 1.5; color: #56636B">{{sourceNote}} {{asOf}} {{denialDefinition}} Counties with fewer than {{minSample}} of those are not ranked.</p></main></div></template>
+<script>
+const DATA_CONFIG = {
+  mode: 'demo', // 'demo' | 'hmda'; supply validated application records via DataAdapter.setRecords in hmda mode.
+  years: [2021,2022,2023,2024,2025], defaultYear: 2025, minSample: 30,
+  get sourceLabel(){return this.mode==='demo'?'Deterministic synthetic mortgage applications':'Public HMDA application data';},
+  vintageLabel: '2026-10-21'
+};
+const PURPOSES = Object.freeze([
+ {value:'purchase',label:'Home purchase'}, {value:'improvement',label:'Home improvement'},
+ {value:'refinance',label:'Refinance'}, {value:'cash-out refinance',label:'Cash-out refinance'}, {value:'other',label:'Other'}
+]);
+const DENIAL_RATE_DEFINITION = 'Denial rate = denied / (originated + approved-not-accepted + denied), with preapprovals excluded.';
+const purposeLabel = value => PURPOSES.find(p=>p.value===value)?.label || PURPOSES[0].label;
+const sourceNote = () => DATA_CONFIG.mode==='demo' ? 'This demo uses synthetic data for illustration, not public HMDA findings or live mortgage offers.' : DATA_CONFIG.sourceLabel + '. Results describe reported applications, not live mortgage offers.';
+const vintageFor = year => typeof DATA_CONFIG.vintageLabel==='object' ? DATA_CONFIG.vintageLabel[year] || 'not supplied' : DATA_CONFIG.vintageLabel;
+const formatPct = x => Number.isFinite(x)?x.toFixed(1)+'%':'Not available';
+const formatNum = x => Number.isFinite(x)?x.toLocaleString('en-US'):'Not available';
+const formatMoney = x => Number.isFinite(x)?'$'+formatNum(x):'Not available';
+function readFilters(){const q=new URLSearchParams(location.hash.split('?')[1]||'');let year=Number(q.get('year')),min=Number(q.get('min')),tolerance=Number(q.get('tolerance'));return {year:DATA_CONFIG.years.includes(year)?year:DATA_CONFIG.defaultYear,purpose:PURPOSES.some(p=>p.value===q.get('purpose'))?q.get('purpose'):PURPOSES[0].value,minSample:Number.isInteger(min)&&min>=1&&min<=10000?min:DATA_CONFIG.minSample,tolerance:[5,10,15,20].includes(tolerance)?tolerance:10};}
+let activeFilters=readFilters();
+function routeTo(page,patch={}){const f={...activeFilters,...patch},q=new URLSearchParams({year:String(f.year),purpose:f.purpose,min:String(f.minSample),tolerance:String(f.tolerance)});location.hash=page+'?'+q;}
+
+
+var GEO = {"g0":"M-4,483L6,480L29,482L48,492L49,494L38,503L34,519L26,527L21,525L2,547L4,557L13,565L14,578L7,586L6,596L18,610L24,626L42,642L50,660L53,676L48,685L50,718L63,731L71,756L72,766L84,780L-4,780Z","g1":"M424,253L421,254L396,264L398,256L379,255L382,248L372,238L377,222L371,219L376,213L380,196L386,186L397,160L401,149L406,125L403,124L332,83L327,80L296,61L220,14L208,-4L424,-4ZM335,249L335,238L345,233L366,228L370,246L362,256L330,277L321,277L324,264L331,260Z","g2":"M208,-4L220,14L207,17L189,36L177,68L168,81L151,95L157,95L143,112L118,127L122,133L126,147L137,164L118,193L108,192L101,218L108,224L102,232L102,244L104,249L111,258L125,257L133,266L131,292L135,303L156,309L161,327L179,341L185,355L202,366L213,386L199,395L191,393L180,406L153,416L133,434L117,444L114,466L97,473L84,478L63,480L48,492L29,482L6,480L-4,483L-4,-4Z","g3":"M176,552L210,515L228,534L228,546L237,547L258,564L271,570L285,568L294,586L310,586L313,592L304,607L275,634L256,647L244,644L238,650L218,651L180,640L180,609L150,581Z","g4":"M332,83L403,124L406,125L401,149L397,160L386,186L378,178L359,193L348,190L351,179L354,168L348,134L323,127L318,118Z","g5":"M153,416L180,406L191,393L199,395L213,386L216,376L236,388L245,389L253,408L291,502L291,556L285,568L271,570L258,564L237,547L228,546L228,534L210,515L189,497L170,496L163,467L153,451L144,448L145,438L133,434Z","g6":"M133,434L145,438L144,448L153,451L163,467L170,496L189,497L210,515L176,552L160,524L150,522L126,488L128,481L114,466L117,444Z","g7":"M166,685L165,670L171,667L174,644L180,640L218,651L238,650L244,644L256,647L232,672L214,703L195,742L178,758L162,762L152,758L158,735L171,709L173,691Z","g8":"M132,564L150,581L180,609L180,640L174,644L171,667L165,670L166,685L140,680L135,673L120,674L113,683L106,677L104,664L89,655L86,647L78,650L65,632L59,634L50,621L48,599L59,598L90,567L127,598L129,572Z","g9":"M318,156L351,179L348,190L343,202L354,203L356,215L350,224L333,219L330,214L315,210L306,211L295,204L296,188L304,181L306,152Z","g10":"M48,492L63,480L84,478L97,473L114,466L128,481L126,488L150,522L160,524L176,552L150,581L132,564L99,534L69,526L58,515L49,494Z","g11":"M348,190L359,193L378,178L386,186L380,196L376,213L371,219L366,228L345,233L350,224L356,215L354,203L343,202Z","g12":"M104,249L114,238L123,235L144,218L156,213L175,189L190,203L213,210L212,237L218,241L216,252L201,277L195,273L207,301L193,304L194,313L178,316L182,325L161,327L156,309L135,303L131,292L133,266L125,257L111,258Z","g13":"M161,327L182,325L178,316L194,313L193,304L207,301L214,316L230,312L237,317L236,332L269,348L269,354L255,365L251,373L238,376L245,389L236,388L216,376L213,386L202,366L185,355L179,341Z","g14":"M237,317L246,303L258,296L275,279L259,260L262,253L274,248L311,245L314,250L332,246L335,249L331,260L324,264L321,277L321,289L330,292L325,306L300,332L290,346L269,354L269,348L236,332Z","g15":"M269,354L290,346L300,332L325,306L330,292L351,291L371,303L383,305L386,293L390,317L387,346L376,394L376,401L366,404L358,390L347,401L326,396L322,380L287,379L253,408L245,389L238,376L251,373L255,365Z","g16":"M202,151L212,148L217,155L230,148L232,135L265,98L265,111L278,107L291,120L312,124L317,132L318,156L306,152L304,181L296,188L295,204L274,224L260,232L262,217L252,199L213,210L190,203L175,189L191,174L194,160Z","g17":"M376,401L365,459L361,505L327,569L310,586L294,586L285,568L291,556L291,502L253,408L287,379L322,380L326,396L347,401L358,390L366,404Z","g18":"M265,98L296,61L327,80L332,83L318,118L323,127L348,134L354,168L351,179L318,156L317,132L312,124L291,120L278,107L265,111Z","g19":"M14,544L26,527L34,519L38,503L49,494L58,515L69,526L99,534L132,564L129,572L127,598L90,567L59,598L48,599L50,621L44,618L35,603L19,596L25,560L15,552Z","g20":"M213,210L252,199L262,217L260,232L274,224L277,231L288,227L283,241L274,248L262,253L259,260L275,279L258,296L246,303L237,317L230,312L214,316L207,301L195,273L201,277L216,252L218,241L212,237Z","g21":"M151,95L168,81L177,68L189,36L207,17L220,14L296,61L265,98L232,135L230,148L217,155L212,148L202,151L157,95Z","g22":"M274,248L283,241L288,227L277,231L274,224L295,204L306,211L315,210L330,214L333,219L350,224L345,233L335,238L335,249L332,246L314,250L311,245Z","g23":"M122,133L118,127L143,112L157,95L202,151L194,160L191,174L175,189L156,213L144,218L123,235L114,238L104,249L102,244L102,232L108,224L101,218L108,192L118,193L137,164L126,147Z","g24":"M48,492L63,480L84,478L97,473L114,466L117,444L133,434L153,416L180,406L191,393L199,395L213,386L202,366L185,355L179,341L161,327L156,309L135,303L131,292L133,266L125,257L111,258L104,249L102,244L102,232L108,224L101,218L108,192L118,193L137,164L126,147L122,133L118,127L143,112L157,95L151,95L168,81L177,68L189,36L207,17L220,14L296,61L327,80L332,83L403,124L406,125L401,149L397,160L386,186L380,196L376,213L371,219L366,228L345,233L335,238L335,249L331,260L324,264L321,277L321,289L330,292L351,291L371,303L383,305L386,293L390,317L387,346L376,394L376,401L365,459L361,505L327,569L310,586L313,592L304,607L275,634L256,647L232,672L214,703L195,742L178,758L162,762L152,758L158,735L171,709L173,691L166,685L140,680L135,673L120,674L113,683L106,677L104,664L89,655L86,647L78,650L65,632L59,634L50,621L44,618L35,603L19,596L25,560L15,552L14,544L26,527L34,519L38,503L49,494Z"};
+const DataAdapter = (()=>{
+/* Numeric seeds from the original mockup. Screens consume only the adapter's computed results. */
+const COUNTY_SEED = {
+      '34001': { n: 'Atlantic', x: 227, y: 593, den: 12.2, med: 275000, chg: 8.5, loans: 5530, top: 'Demo lender', nb: ['34005', '34007', '34009', '34011', '34015', '34029'], nbden: 10.0, nbmed: 325000, nbchg: 11.0, r: ['7th highest of 21', '3rd lowest of 21', '3rd slowest of 21'] },
+      '34003': { n: 'Bergen', x: 364, y: 136, den: 11.5, med: 555000, chg: 16.0, loans: 13445, top: 'Demo lender', nb: ['34013', '34017', '34031'], nbden: 14.3, nbmed: 515000, nbchg: 13.1, r: ['10th highest of 21', 'highest in NJ', '5th fastest of 21'] },
+      '34005': { n: 'Burlington', x: 226, y: 470, den: 9.9, med: 315000, chg: 13.6, loans: 10826, top: 'Demo lender', nb: ['34001', '34007', '34021', '34025', '34029'], nbden: 10.7, nbmed: 355000, nbchg: 12.9, r: ['7th lowest of 21', '6th lowest of 21', '9th fastest of 21'] },
+      '34007': { n: 'Camden', x: 157, y: 492, den: 9.8, med: 285000, chg: 10.4, loans: 10567, top: 'Demo lender', nb: ['34001', '34005', '34015'], nbden: 10.0, nbmed: 295000, nbchg: 11.6, r: ['5th lowest of 21', '4th lowest of 21', '5th slowest of 21'] },
+      '34009': { n: 'Cape May', x: 194, y: 694, den: 9.9, med: 455000, chg: 0.4, loans: 3576, top: 'Demo lender', nb: ['34001', '34011'], nbden: 12.9, nbmed: 250000, nbchg: 10.9, r: ['6th lowest of 21', '9th highest of 21', 'slowest growth in NJ'] },
+      '34011': { n: 'Cumberland', x: 120, y: 625, den: 14.3, med: 225000, chg: 16.6, loans: 2545, top: 'Demo lender', nb: ['34001', '34009', '34015', '34033'], nbden: 10.2, nbmed: 310000, nbchg: 7.8, r: ['3rd highest of 21', '2nd lowest of 21', '2nd fastest of 21'] },
+      '34013': { n: 'Essex', x: 325, y: 190, den: 14.8, med: 535000, chg: 11.8, loans: 10435, top: 'Demo lender', nb: ['34003', '34017', '34027', '34031', '34039'], nbden: 11.9, nbmed: 515000, nbchg: 13.6, r: ['highest in NJ', '3rd highest of 21', '9th slowest of 21'] },
+      '34015': { n: 'Gloucester', x: 114, y: 519, den: 8.3, med: 295000, chg: 11.1, loans: 7291, top: 'Demo lender', nb: ['34001', '34007', '34011', '34033'], nbden: 11.3, nbmed: 250000, nbchg: 10.5, r: ['lowest in NJ', '5th lowest of 21', '6th slowest of 21'] },
+      '34017': { n: 'Hudson', x: 365, y: 205, den: 14.6, med: 545000, chg: 14.7, loans: 6257, top: 'Demo lender', nb: ['34003', '34013', '34039'], nbden: 12.7, nbmed: 530000, nbchg: 12.0, r: ['2nd highest of 21', '2nd highest of 21', '7th fastest of 21'] },
+      '34019': { n: 'Hunterdon', x: 169, y: 258, den: 8.5, med: 425000, chg: 15.2, loans: 2648, top: 'Demo lender', nb: ['34021', '34027', '34035', '34041'], nbden: 10.2, nbmed: 410000, nbchg: 17.2, r: ['2nd lowest of 21', '11th lowest of 21', '6th fastest of 21'] },
+      '34021': { n: 'Mercer', x: 218, y: 345, den: 11.6, med: 345000, chg: 21.1, loans: 6373, top: 'Demo lender', nb: ['34005', '34019', '34023', '34025', '34035'], nbden: 10.7, nbmed: 430000, nbchg: 13.8, r: ['9th highest of 21', '9th lowest of 21', 'fastest growth in NJ'] },
+      '34023': { n: 'Middlesex', x: 287, y: 296, den: 12.5, med: 435000, chg: 11.6, loans: 12130, top: 'Demo lender', nb: ['34021', '34025', '34035', '34039'], nbden: 11.0, nbmed: 455000, nbchg: 14.0, r: ['6th highest of 21', '10th highest of 21', '8th slowest of 21'] },
+      '34025': { n: 'Monmouth', x: 330, y: 352, den: 10.6, med: 495000, chg: 14.6, loans: 13213, top: 'Demo lender', nb: ['34005', '34021', '34023', '34029'], nbden: 11.0, nbmed: 370000, nbchg: 13.4, r: ['10th lowest of 21', '6th highest of 21', '8th fastest of 21'] },
+      '34027': { n: 'Morris', x: 255, y: 167, den: 8.7, med: 505000, chg: 16.4, loans: 9082, top: 'Demo lender', nb: ['34013', '34019', '34031', '34035', '34037', '34039', '34041'], nbden: 12.3, nbmed: 440000, nbchg: 11.8, r: ['3rd lowest of 21', '4th highest of 21', '3rd fastest of 21'] },
+      '34029': { n: 'Ocean', x: 317, y: 467, den: 10.2, med: 375000, chg: 11.5, loans: 14881, top: 'Demo lender', nb: ['34001', '34005', '34025'], nbden: 10.7, nbmed: 360000, nbchg: 13.1, r: ['8th lowest of 21', '10th lowest of 21', '7th slowest of 21'] },
+      '34031': { n: 'Passaic', x: 312, y: 113, den: 13.2, med: 465000, chg: 13.6, loans: 6130, top: 'Demo lender', nb: ['34003', '34013', '34027', '34037'], nbden: 11.7, nbmed: 485000, nbchg: 14.4, r: ['5th highest of 21', '8th highest of 21', '10th fastest of 21'] },
+      '34033': { n: 'Salem', x: 64, y: 558, den: 11.2, med: 225000, chg: 8.9, loans: 1474, top: 'Demo lender', nb: ['34011', '34015'], nbden: 10.2, nbmed: 260000, nbchg: 12.5, r: ['11th lowest of 21', 'lowest in NJ', '4th slowest of 21'] },
+      '34035': { n: 'Somerset', x: 238, y: 258, den: 9.6, med: 475000, chg: 16.4, loans: 5885, top: 'Demo lender', nb: ['34019', '34021', '34023', '34027', '34039'], nbden: 11.1, nbmed: 445000, nbchg: 13.3, r: ['4th lowest of 21', '7th highest of 21', '4th fastest of 21'] },
+      '34037': { n: 'Sussex', x: 221, y: 81, den: 10.3, med: 345000, chg: 12.0, loans: 3639, top: 'Demo lender', nb: ['34027', '34031', '34041'], nbden: 11.0, nbmed: 430000, nbchg: 14.8, r: ['9th lowest of 21', '8th lowest of 21', '11th slowest of 21'] },
+      '34039': { n: 'Union', x: 310, y: 229, den: 12.0, med: 505000, chg: 6.0, loans: 7687, top: 'Demo lender', nb: ['34013', '34017', '34023', '34027', '34035'], nbden: 12.4, nbmed: 500000, nbchg: 13.7, r: ['8th highest of 21', '5th highest of 21', '2nd slowest of 21'] },
+      '34041': { n: 'Warren', x: 149, y: 168, den: 13.3, med: 325000, chg: 11.9, loans: 2355, top: 'Demo lender', nb: ['34019', '34027', '34037'], nbden: 9.0, nbmed: 425000, nbchg: 15.1, r: ['4th highest of 21', '7th lowest of 21', '10th slowest of 21'] }
+    };
+const PURPOSE_SEED = [
+      { label: 'Home purchase', noun: 'home purchase', rate: 11.3, denied: 10591, decided: 93625, high: ['Essex', 14.8, 985, 6672], low: ['Gloucester', 8.3],
+        reasons: [['Debt-to-income ratio', 40], ['Collateral', 22], ['Credit history', 16], ['Other', 16]] },
+      { label: 'Refinance', noun: 'refinance', rate: 25.0, denied: 6341, decided: 25317, high: ['Mercer', 27.8, 274, 985], low: ['Gloucester', 21.5],
+        reasons: [['Debt-to-income ratio', 45], ['Credit history', 25], ['Collateral', 14], ['Credit application incomplete', 13]] },
+      { label: 'Cash-out refinance', noun: 'cash-out refinance', rate: 33.1, denied: 11700, decided: 35316, high: ['Hudson', 39.3, 445, 1133], low: ['Mercer', 26.7],
+        reasons: [['Debt-to-income ratio', 35], ['Credit application incomplete', 26], ['Credit history', 25], ['Collateral', 15]] },
+      { label: 'Home improvement', noun: 'home improvement', rate: 40.3, denied: 13648, decided: 33835, high: ['Hudson', 55.0, 537, 977], low: ['Morris', 32.6],
+        reasons: [['Debt-to-income ratio', 46], ['Credit history', 36], ['Collateral', 19], ['Other', 9]] },
+      { label: 'Other', noun: 'other-purpose', rate: 45.2, denied: 15799, decided: 34986, high: ['Hudson', 56.1, 550, 980], low: ['Cape May', 39.5],
+        reasons: [['Debt-to-income ratio', 40], ['Credit history', 36], ['Credit application incomplete', 15], ['Collateral', 14]] }
+    ];
+
+const lenderRecords = [
+ {id:'garden',name:'Garden State Lending',lenderGroup:'garden'},
+ {id:'atlantic',name:'Atlantic Home Finance',lenderGroup:'atlantic'},
+ {id:'liberty',name:'Liberty Mortgage',lenderGroup:'liberty'},
+ {id:'predecessor',name:'Meadow Bank',lenderGroup:'river'},
+ {id:'successor',name:'Riverbend Bank',lenderGroup:'river'}
+];
+let demoRows,realRows=null;const cache=new Map();
+const geography=Object.fromEntries(Object.entries(COUNTY_SEED).map(([id,c])=>[id,{n:c.n,x:c.x,y:c.y,nb:c.nb}]));
+function generate(){let seed=6942026,id=0;const rnd=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;},rows=[];
+ Object.entries(COUNTY_SEED).forEach(([fips,c],ci)=>DATA_CONFIG.years.forEach((year,yi)=>PURPOSES.forEach((purpose,pi)=>{
+ const ps=PURPOSE_SEED.find(s=>s.label===purpose.label),scale=[1.55,1.14,.87,1,1.12][yi]||1;
+ const n=Math.round((ci===16?24:450+ci*17)*scale*(purpose.value==='purchase'?1.8:.8)*(ci===4?1+yi*.001:1));
+ for(let j=0;j<n;j++) {const rate=Math.min(.7,ps.rate/100*(c.den/11.3)),u=rnd(),outcome=u<rate?'denied':u<rate+.05?'approved-not-accepted':u<rate+.14?'withdrawn':u<rate+.18?'incomplete':'originated';
+ const lenderIndex=Math.floor(rnd()*5);const lender=lenderRecords[yi===DATA_CONFIG.years.length-1&&lenderIndex===3?4:lenderIndex];
+ const reasons=outcome==='denied'?ps.reasons.filter(r=>rnd()<r[1]/100).map(r=>r[0]):[];
+ rows.push({id:++id,year,county:fips,purpose:purpose.value,amount:Math.round(c.med*(.45+rnd()*1.1)*(1+yi*.035)/1000)*1000,outcome,preapproval:rnd()<.025,lenderId:lender.id,lenderName:lender.name,lenderGroup:lender.lenderGroup,reasons});
+ }
+ })) );return rows;}
+function records(){if(DATA_CONFIG.mode==='demo')return demoRows||(demoRows=generate());if(DATA_CONFIG.mode!=='hmda')throw Error('Unknown data mode.');if(!realRows)throw Error('HMDA data is not loaded. Connect the application-data provider before using HMDA mode.');return realRows;}
+function rows(f){return records().filter(r=>r.year===f.year&&r.purpose===f.purpose&&!r.preapproval);}
+function median(a){if(!a.length)return null;a=a.slice().sort((x,y)=>x-y);const m=Math.floor(a.length/2);return a.length%2?a[m]:(a[m-1]+a[m])/2;}
+function summary(a){a=a.filter(r=>!r.preapproval);const origin=a.filter(r=>r.outcome==='originated'),denied=a.filter(r=>r.outcome==='denied'),decisions=a.filter(r=>['originated','approved-not-accepted','denied'].includes(r.outcome)).length,groups=new Map();
+ origin.forEach(r=>{const key=r.lenderGroup||r.lenderId;if(!groups.has(key))groups.set(key,{lenderGroup:key,name:DATA_CONFIG.mode==='demo'?(key==='river'?'Riverbend Lending Group':lenderRecords.find(l=>l.lenderGroup===key)?.name||'Demo lender'):r.lenderGroupName||r.lenderName,count:0});groups.get(key).count++;});
+ return {applications:a.length,loans:origin.length,denied:denied.length,decisions,den:decisions?100*denied.length/decisions:null,med:median(origin.map(r=>r.amount)),lenders:[...groups.values()].sort((a,b)=>b.count-a.count||a.name.localeCompare(b.name))};}
+function change(a,b,min){return a.applications&&b.applications&&a.loans>=min&&b.loans>=min&&b.loans>0?100*(a.loans/b.loans-1):null;}
+function getCountyMetrics(f){const key=JSON.stringify([DATA_CONFIG.mode,'county',f]);if(cache.has(key))return cache.get(key);const a=rows(f),prev=rows({...f,year:f.year-1}),C={};
+ for(const [id,g] of Object.entries(geography)){const s=summary(a.filter(r=>r.county===id)),before=summary(prev.filter(r=>r.county===id)),ns=summary(a.filter(r=>g.nb.includes(r.county))),np=summary(prev.filter(r=>g.nb.includes(r.county)));C[id]={...g,...s,den:s.decisions>=f.minSample?s.den:null,med:s.loans>=f.minSample?s.med:null,chg:change(s,before,f.minSample),nbden:ns.decisions>=f.minSample?ns.den:null,nbmed:ns.loans>=f.minSample?ns.med:null,nbchg:change(ns,np,f.minSample),top:s.lenders[0]?.count>=f.minSample?s.lenders[0].name:'Not ranked',r:[]};}
+ ['den','med','chg'].forEach((metric,i)=>{const ranked=Object.keys(C).filter(id=>Number.isFinite(C[id][metric])).sort((a,b)=>C[b][metric]-C[a][metric]);Object.keys(C).forEach(id=>C[id].r[i]=ranked.includes(id)?`${ranked.indexOf(id)+1} of ${ranked.length} eligible counties`:'Not ranked: missing or small sample');});
+ const nj=summary(a),before=summary(prev),result={counties:C,statewide:{...nj,den:nj.decisions>=f.minSample?nj.den:null,med:nj.loans>=f.minSample?nj.med:null,chg:change(nj,before,f.minSample)}};cache.set(key,result);return result;}
+function getLoanMatches(f,amount,tolerance=f.tolerance){const a=rows(f),matching=a.filter(r=>r.outcome==='originated'&&r.amount>=amount*(1-tolerance/100)&&r.amount<=amount*(1+tolerance/100)),counties=Object.entries(geography).map(([id,c])=>{const total=summary(a.filter(r=>r.county===id)).loans,count=matching.filter(r=>r.county===id).length;return {id,name:c.n,total,count,share:total?100*count/total:null,eligible:total>=f.minSample};}).sort((a,b)=>b.count-a.count||a.name.localeCompare(b.name)),top=counties.filter(c=>c.eligible&&c.count>0).slice(0,5),lenders=summary(matching.filter(r=>r.county===top[0]?.id)).lenders;return {amount,year:f.year,purpose:f.purpose,tolerance,minSample:f.minSample,total:matching.length,counties,top,lenders,displayLenders:lenders.filter(l=>l.count>=f.minSample).slice(0,3)};}
+function getDenialStats(f){return PURPOSES.map(p=>{const a=rows({...f,purpose:p.value}),s=summary(a),C=getCountyMetrics({...f,purpose:p.value}).counties,ranked=Object.values(C).filter(c=>c.den!==null).sort((a,b)=>b.den-a.den),reasonNames=[...new Set(PURPOSE_SEED.flatMap(p=>p.reasons.map(r=>r[0])))],denied=a.filter(r=>r.outcome==='denied');return {value:p.value,label:p.label,noun:p.label.toLowerCase(),rate:s.decisions>=f.minSample?s.den:null,denied:s.denied,decided:s.decisions,high:ranked[0]?[ranked[0].n,ranked[0].den,ranked[0].denied,ranked[0].decisions]:['No eligible county',null,0,0],low:ranked.length?[ranked.at(-1).n,ranked.at(-1).den]:['No eligible county',null],reasons:reasonNames.map(name=>[name,denied.length>=f.minSample?100*denied.filter(r=>new Set(r.reasons).has(name)).length/denied.length:null]).filter(r=>r[1]!==null).sort((a,b)=>b[1]-a[1])};});}
+function getChanges(f){const years=DATA_CONFIG.years,first=years[0],last=years.at(-1),series=years.map(year=>({year,...summary(rows({...f,year}))})),start=series[0],end=series.at(-1),countyChanges=Object.entries(geography).map(([id,c])=>{const a=summary(rows({...f,year:last}).filter(r=>r.county===id)),b=summary(rows({...f,year:first}).filter(r=>r.county===id));return {id,name:c.n,current:a.loans,prior:b.loans,change:change(a,b,f.minSample)};});
+ const linked=new Map();records().forEach(r=>{if(!linked.has(r.lenderGroup))linked.set(r.lenderGroup,new Map());linked.get(r.lenderGroup).set(r.lenderId,r.lenderName);});
+ const groupId=DATA_CONFIG.mode==='demo'?'river':[...linked].find(([id,members])=>members.size>1)?.[0],members=groupId?[...linked.get(groupId).keys()]:[],predecessor=DATA_CONFIG.mode==='demo'?'predecessor':members[0],successor=DATA_CONFIG.mode==='demo'?'successor':members[1];
+ const merger=years.map(year=>{const a=rows({...f,year}).filter(r=>r.outcome==='originated'&&r.lenderGroup===groupId);return {year,predecessor:a.filter(r=>r.lenderId===predecessor).length,successor:a.filter(r=>r.lenderId!==predecessor).length,total:a.length};});
+ const appChange=start.applications>=f.minSample&&end.applications>=f.minSample?100*(end.applications/start.applications-1):null;
+ return {first,last,selectedYear:f.year,rangeNote:`Changes compares ${first}–${last}; the selected year is highlighted in the charts.`,series,applicationChange:appChange,loanChange:change(end,start,f.minSample),countyChanges,capeMay:countyChanges.find(c=>c.name==='Cape May'),merger,lenderGroup:groupId||null,predecessorName:groupId?linked.get(groupId).get(predecessor):'No linked group',successorName:groupId?(members.length>2?'Other group members':linked.get(groupId).get(successor)):'No successor'};
+}
+return {getCountyMetrics,getLoanMatches,getDenialStats,getChanges,geography,lenderRecords,
+ // Production boundary: normalized HMDA rows, not raw CSV. Never falls back to synthetic records in HMDA mode.
+ setRecords(records){if(DATA_CONFIG.mode!=='hmda')throw Error('Set mode to hmda before installing HMDA records.');if(!Array.isArray(records))throw Error('Expected application records.');records.forEach(r=>{if(!DATA_CONFIG.years.includes(r.year)||!geography[r.county]||!PURPOSES.some(p=>p.value===r.purpose)||!['originated','approved-not-accepted','denied','withdrawn','incomplete'].includes(r.outcome)||typeof r.preapproval!=='boolean'||!Number.isFinite(r.amount)||r.amount<0||!r.lenderId||!r.lenderGroup||!r.lenderName||!Array.isArray(r.reasons))throw Error('Invalid normalized HMDA record.');});realRows=structuredClone(records);cache.clear();},resetDemo(){demoRows=null;cache.clear();}
+};})();
+
+var SCREENS = {};
+var root, instances = {};
+function DCLogic(props) { this.props = props || {}; this.state = {}; }
+DCLogic.prototype.setState = function (p) {
+  var next = typeof p === 'function' ? p(this.state, this.props) : p;
+  this.state = Object.assign({}, this.state, next);
+  render();
+};
+DCLogic.prototype.forceUpdate = function () { render(); };
+function look(path, scope) {
+  path = path.trim();
+  if (path === 'true') return true;
+  if (path === 'false') return false;
+  if (/^-?\d+(\.\d+)?$/.test(path)) return +path;
+  var parts = path.split('.'), v = scope[parts[0]];
+  for (var i = 1; i < parts.length && v != null; i++) v = v[parts[i]];
+  return v;
+}
+var WHOLE = /^\{\{([^}]+)\}\}$/, ANY = /\{\{([^}]+)\}\}/g;
+function fill(str, scope) {
+  return str.replace(ANY, function (_, p) { var v = look(p, scope); return v == null ? '' : String(v); });
+}
+function setAttr(el, name, raw, scope) {
+  if (name.indexOf('hint-') === 0) return;
+  var m = raw.match(WHOLE);
+  if (!m) { el.setAttribute(name, fill(raw, scope)); return; }
+  var v = look(m[1], scope);
+  if (name.indexOf('on') === 0 && name.length > 2) { if (typeof v === 'function') { (el.__on = el.__on || {})[name.slice(2)] = v; bind(el, name.slice(2)); } return; }
+  if (name === 'value') { el.__value = v; return; }
+  if (name === 'disabled' || name === 'checked' || name === 'hidden') { if (v) el.setAttribute(name, ''); return; }
+  if (v == null || (v === false && name.indexOf('aria-') !== 0)) return;
+  el.setAttribute(name, String(v));
+}
+function build(node, scope, out) {
+  node.childNodes.forEach(function (c) {
+    if (c.nodeType === 3) { out.appendChild(document.createTextNode(fill(c.nodeValue, scope))); return; }
+    if (c.nodeType !== 1) return;
+    var tag = c.localName;
+    if (tag === 'sc-for') { loop(c, look(c.getAttribute('list').replace(/[{}]/g, ''), scope), c.getAttribute('as'), scope, out, true); return; }
+    if (tag === 'sc-if') { if (look(c.getAttribute('value').replace(/[{}]/g, ''), scope)) build(c, scope, out); return; }
+    if (c.hasAttribute('data-sc-for')) { loop(c, look(c.getAttribute('data-sc-for').replace(/[{}]/g, ''), scope), c.getAttribute('data-sc-as'), scope, out, false); return; }
+    element(c, scope, out);
+  });
+}
+function loop(c, list, as, scope, out, inner) {
+  (list || []).forEach(function (item, i) {
+    var s = Object.create(scope); s[as] = item; s.$index = i;
+    if (inner) build(c, s, out); else element(c, s, out);
+  });
+}
+function element(c, scope, out) {
+  var el = document.createElementNS(c.namespaceURI, c.localName);
+  Array.prototype.forEach.call(c.attributes, function (a) {
+    if (a.name !== 'data-sc-for' && a.name !== 'data-sc-as') setAttr(el, a.name, a.value, scope);
+  });
+  build(c, scope, el);
+  if (el.__value !== undefined) el.value = el.__value;
+  out.appendChild(el);
+}
+// one listener per event type; re-renders swap the handler, not the node
+function bind(el, type) {
+  el.__bound = el.__bound || {};
+  if (el.__bound[type]) return;
+  el.__bound[type] = true;
+  el.addEventListener(type, function (e) { var f = el.__on && el.__on[type]; if (f) f(e); });
+}
+// patch the live page to match a fresh build, so hover state and focus survive
+function same(a, b) { return a.nodeType === b.nodeType && (a.nodeType !== 1 || (a.namespaceURI === b.namespaceURI && a.localName === b.localName)); }
+function morph(a, b) {
+  if (a.nodeType === 3) { if (a.nodeValue !== b.nodeValue) a.nodeValue = b.nodeValue; return; }
+  Array.prototype.slice.call(a.attributes).forEach(function (x) { if (!b.hasAttribute(x.name)) a.removeAttribute(x.name); });
+  Array.prototype.forEach.call(b.attributes, function (x) { if (a.getAttribute(x.name) !== x.value) a.setAttribute(x.name, x.value); });
+  a.__on = b.__on || {};
+  for (var t in a.__on) bind(a, t);
+  morphKids(a, b);
+  if (b.__value !== undefined && a.value !== String(b.__value)) a.value = b.__value;
+}
+function morphKids(a, b) {
+  var next = Array.prototype.slice.call(b.childNodes);
+  next.forEach(function (n, i) {
+    var old = a.childNodes[i];
+    if (!old) a.appendChild(n);
+    else if (same(old, n)) morph(old, n);
+    else a.replaceChild(n, old);
+  });
+  while (a.childNodes.length > next.length) a.removeChild(a.lastChild);
+}
+var shown = null;
+function current() { var h = location.hash.slice(1).split('?')[0]; return SCREENS[h] ? h : 'start'; }
+function render() {
+  activeFilters=readFilters();
+  var key = current(), tpl = document.getElementById('tpl-' + key);
+  var inst = instances[key] || (instances[key] = new SCREENS[key]({}));
+  let values;
+  try { values=inst.renderVals(); } catch(error) { root.innerHTML='<main style="max-width:1200px;margin:0 auto;padding:40px 24px;font-family:Public Sans,system-ui,sans-serif"><h1>Data unavailable</h1><p role="alert">'+escapeText(error.message)+'</p><p>'+escapeText(sourceNote())+'</p></main>';shown=null;return; }
+  var scope = Object.assign({geo:GEO,...sharedScope()}, values);
+  var fresh = document.createElement('div');
+  build(tpl.content, scope, fresh);
+  if (key === shown) { morphKids(root, fresh); }
+  else { root.replaceChildren.apply(root, Array.prototype.slice.call(fresh.childNodes)); shown = key; }
+  document.title = tpl.getAttribute('data-title') + ' - Mortgage Market Explorer';
+  refreshScreenTools();
+}
+
+SCREENS.start = (function () {
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+return Component;
+})();
+SCREENS.loan = (function () {
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { amt: '400000', custom:false };
+  }
+  renderVals() {
+    const FIPS=Object.fromEntries(Object.entries(DataAdapter.geography).map(([id,c])=>[c.n,id])), XY=Object.fromEntries(Object.entries(DataAdapter.geography).map(([id,c])=>[id,[c.x,c.y]]));
+    const fmt = (n) => n.toLocaleString('en-US');
+    const amt = this.state.amt;
+    const result = DataAdapter.getLoanMatches(activeFilters,Number(amt),activeFilters.tolerance);
+    this.lastResult=result;
+    const d = {label:'$'+Number(amt).toLocaleString('en-US'),total:result.total,counties:result.top.map(c=>[c.name,c.count,c.share]),lenders:result.displayLenders.map(l=>[l.name,l.count])};
+    const short = { '250000': '$250k', '400000': '$400k', '600000': '$600k' };
+    const amounts = ['250000','400000'].map((k) => {
+      const on = k === amt && !this.state.custom;
+      return { label: short[k], on: on, bg: on ? '#142026' : '#FFFFFF', fg: on ? '#FFFFFF' : '#142026', bd: on ? '#142026' : '#B8C3C1', pick: () => this.setState({ amt: k, custom:false }) };
+    });
+    const max = d.counties[0]?.[1] || 1;
+    const rows = d.counties.map((c, i) => ({ rank: i + 1, name: c[0], loans: fmt(c[1]), w: Math.round((c[1] / max) * 100), dot: i === 0 ? '#142026' : '#5B95A5' }));
+    const top = d.counties[0] || ['No matching results',0,0];
+    const fills = {};
+    Object.values(FIPS).forEach((f) => { fills['c' + f] = '#DDE5E6'; });
+    d.counties.forEach((c, i) => { fills['c' + FIPS[c[0]]] = i === 0 ? '#2F6E80' : '#8DB8C3'; });
+    const badge = (i) => { const p = d.counties[i] ? XY[FIPS[d.counties[i][0]]] : [-100,-100]; return { x: p[0], y: p[1] }; };
+    return {
+      amounts: amounts,
+      editing:!!this.state.editing,
+      custom: this.state.custom,
+      customAmount:amt,
+      otherBg:this.state.custom?'#142026':'#FFFFFF',otherFg:this.state.custom?'#FFFFFF':'#142026',
+      year:activeFilters.year,tolerance:activeFilters.tolerance,minSample:activeFilters.minSample,shownCount:result.top.length,
+      hasResults:result.top.length>0, noResults:result.top.length===0,
+      topLabel:result.top.length?top[0]+' County':'No matching results',
+      emptyMessage:result.top.length?'':'No eligible matches. Try another amount, year or minimum sample size.',
+      lenderMessage:d.lenders.length?'':'No lenders meet the minimum sample size for this range.',
+      amountLabel: d.label,
+      top: { name: top[0] },
+      answer: result.top.length ? fmt(top[1]) + ' of the ' + fmt(d.total) + ' '+purposeLabel(activeFilters.purpose).toLowerCase()+' loans near ' + d.label + ' in New Jersey in ' + activeFilters.year + ' were made in ' + top[0] + '. About ' + Math.round(top[2]) + '% of all '+purposeLabel(activeFilters.purpose).toLowerCase()+' loans there were this size.' : 'No matching loans meet the current minimum sample size.',
+      rows: rows,
+      lenders: d.lenders.map((l) => ({ name: l[0], loans: fmt(l[1]) })),
+      fills: fills,
+      b1: badge(0), b2: badge(1), b3: badge(2), b4: badge(3), b5: badge(4),
+      mapLabel: 'Map of New Jersey. Most loans near ' + d.label + ': ' + d.counties.map((c) => c[0]).join(', ') + '.'
+    };
+  }
+}
+return Component;
+})();
+SCREENS.map = (function () {
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { m: 'den', hover: null, pin: '34013' };
+  }
+  renderVals() {
+    const metrics = DataAdapter.getCountyMetrics(activeFilters);
+    const C = metrics.counties;
+    this.referenceData = C;
+    const D = {
+      '34001': GEO.g3,
+      '34003': GEO.g4,
+      '34005': GEO.g5,
+      '34007': GEO.g6,
+      '34009': GEO.g7,
+      '34011': GEO.g8,
+      '34013': GEO.g9,
+      '34015': GEO.g10,
+      '34017': GEO.g11,
+      '34019': GEO.g12,
+      '34021': GEO.g13,
+      '34023': GEO.g14,
+      '34025': GEO.g15,
+      '34027': GEO.g16,
+      '34029': GEO.g17,
+      '34031': GEO.g18,
+      '34033': GEO.g19,
+      '34035': GEO.g20,
+      '34037': GEO.g21,
+      '34039': GEO.g22,
+      '34041': GEO.g23
+    };
+    const NJ = metrics.statewide;
+    const RAMP = ['#E4EEF0', '#BCD6DC', '#8DB8C3', '#5B95A5', '#2F6E80'];
+    const money = formatMoney;
+    const pct = formatPct;
+    const sign = v => Number.isFinite(v)?(v>=0?'+':'')+formatPct(v):'Not available';
+    const year=activeFilters.year, prior=year-1, purpose=purposeLabel(activeFilters.purpose);
+    const M = {
+      den:{button:purpose+' denials',legend:purpose+' applications turned down, '+year,label:'of '+purpose.toLowerCase()+' applications turned down in '+year,rows:'Turned down, next to its neighbors',f:pct,ri:0},
+      med:{button:'Typical loan',legend:'Typical '+purpose.toLowerCase()+' loan, '+year,label:'typical '+purpose.toLowerCase()+' loan in '+year,rows:'Typical loan, next to its neighbors',f:money,ri:1},
+      chg:{button:'Change since '+prior,legend:'Change in loans made, '+prior+' to '+year,label:'change in loans made, '+prior+' to '+year,rows:'Change in loans made, next to its neighbors',f:sign,ri:2}
+    };
+    const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+    const m = this.state.m;
+    const mm = M[m];
+    const pin = this.state.pin;
+    const hov = this.state.hover;
+    const ids = Object.keys(C);
+    const sorted = ids.filter(id=>Number.isFinite(C[id][m])).sort((a, b) => C[a][m] - C[b][m]);
+    const klass = {};
+    sorted.forEach((id, i) => { klass[id] = Math.min(4, Math.floor((i * 5) / ids.length)); });
+    const legend = RAMP.map((col, k) => {
+      const vs = sorted.filter((id) => klass[id] === k).map((id) => C[id][m]);
+      return { col: col, text: mm.f(vs[0]) + ' to ' + mm.f(vs[vs.length - 1]) };
+    });
+    const near = pin ? C[pin].nb : [];
+    const fills = {};
+    const cl = {};
+    const enter = {};
+    const pick = {};
+    ids.forEach((id) => {
+      fills['c' + id] = klass[id]===undefined?'#DDE5E6':RAMP[klass[id]];
+      cl['c' + id] = pin && id !== pin && near.indexOf(id) < 0 ? 'cty dim' : 'cty';
+      enter['c' + id] = () => { if (this.state.hover !== id) this.setState({ hover: id }); };
+      pick['c' + id] = () => this.setState({ pin: id });
+    });
+    const names={},pressed={},keys={};
+    ids.forEach(id=>{names['c'+id]=C[id].n+' County';pressed['c'+id]=pin===id;keys['c'+id]=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();pick['c'+id]();}};});
+    const countyLabels=ids.map(id=>({name:C[id].n,x:C[id].x,y:C[id].y,cls:cl['c'+id].includes('dim')?'county-label dim':'county-label'}));
+    const tid = hov;
+    let tip = { show: false, others: [] };
+    if (tid) {
+      const c = C[tid];
+      tip = {
+        show: true,
+        name: c.n + ' County',
+        value: mm.f(c[m]),
+        label: mm.label,
+        rank: cap(c.r[mm.ri]),
+        others: ['den', 'med', 'chg'].filter((k) => k !== m).map((k) => ({ label: M[k].button, value: M[k].f(c[k]) })),
+        l: ((c.x / 420) * 100).toFixed(2),
+        t: ((c.y / 776) * 100).toFixed(2),
+        tx: c.x > 230 ? 'calc(-100% - 18px)' : '18px',
+        ty: c.y < 140 ? '-12%' : c.y > 640 ? '-88%' : '-50%',
+        hint: tid === pin ? 'Compared with its neighbors at right' : 'Click to compare with its neighbors'
+      };
+    }
+    let panel = { rows: [] };
+    if (pin) {
+      const c = C[pin];
+      const list = [{ id: pin, kind: 'self' }]
+        .concat(c.nb.map((id) => ({ id: id, kind: 'nb' })))
+        .concat([{ id: null, kind: 'nj' }]);
+      const valOf = (r) => (r.kind === 'nj' ? NJ[m] : C[r.id][m]);
+      const max = Math.max(1,...list.map(r=>Math.abs(valOf(r)||0)));
+      const sentence = m==='den' ? c.n+' turned down '+pct(c.den)+' of '+purpose.toLowerCase()+' applications in '+year+'. Next door it was '+pct(c.nbden)+', and across New Jersey '+pct(NJ.den)+'.' : m==='med' ? 'A typical '+purpose.toLowerCase()+' loan in '+c.n+' was '+money(c.med)+' in '+year+'. Next door it was '+money(c.nbmed)+', and across New Jersey '+money(NJ.med)+'.' : c.n+' made '+formatNum(c.loans)+' loans in '+year+', '+sign(c.chg)+' from '+prior+'. Next door the change was '+sign(c.nbchg)+', and across New Jersey '+sign(NJ.chg)+'.';
+      panel = {
+        name: c.n,
+        sentence: sentence,
+        title: mm.rows,
+        loans: c.loans.toLocaleString('en-US'),
+        top: c.top,
+        rows: list.map((r) => {
+          const v = valOf(r);
+          return {
+            name: r.kind === 'nj' ? 'All of New Jersey' : C[r.id].n,
+            value: mm.f(v),
+            w: Number.isFinite(v)?Math.max(2, Math.round((Math.abs(v) / max) * 100)):0,
+            col: r.kind === 'self' ? '#142026' : r.kind === 'nb' ? '#5B95A5' : '#A3AEAC',
+            weight: r.kind === 'self' ? 700 : 500,
+            off: r.kind !== 'nb',
+            go: r.kind === 'nb' ? () => this.setState({ pin: r.id, hover: null }) : () => {}
+          };
+        })
+      };
+    }
+    const measures = ['den', 'med', 'chg'].map((k) => {
+      const on = k === m;
+      return { label: M[k].button, on: on, bg: on ? '#142026' : '#FFFFFF', fg: on ? '#FFFFFF' : '#142026', bd: on ? '#142026' : '#B8C3C1', pick: () => this.setState({ m: k }) };
+    });
+    const options = ids.map((id) => ({ id: id, name: C[id].n }));
+    return {
+      names,pressed,keys,countyLabels,
+      measures: measures,
+      fills: fills,
+      cl: cl,
+      enter: enter,
+      pick: pick,
+      leave: () => this.setState({ hover: null }),
+      hoverD: hov ? D[hov] : '',
+      pinD: pin ? D[pin] : '',
+      tip: tip,
+      legend: legend,
+      legendTitle: mm.legend,
+      hasPin: !!pin,
+      noPin: !pin,
+      panel: panel,
+      clear: () => this.setState({ pin: null }),
+      options: options,
+      pinValue: pin || '',
+      onSelect: (e) => this.setState({ pin: e.target.value || null, hover: null }),
+      mapLabel: 'Map of New Jersey counties shaded by ' + mm.legend.toLowerCase() + '. Darker means higher.'
+    };
+  }
+}
+return Component;
+})();
+SCREENS.changes = (function () {
+class Component extends DCLogic {
+  renderVals() {
+    return {stories:changeStories(DataAdapter.getChanges(activeFilters))};
+  }
+}
+return Component;
+})();
+SCREENS.denials = (function () {
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { technical: false };
+  }
+  renderVals() {
+    const PLAIN = {
+      'Debt-to-income ratio': 'Debt too high for the income',
+      'Collateral': "The home's value didn't cover the loan",
+      'Credit history': 'Credit history',
+      'Credit application incomplete': 'Application left incomplete',
+      'Other': 'Other reason'
+    };
+    const P = DataAdapter.getDenialStats(activeFilters);
+    const fmt = (n) => n.toLocaleString('en-US');
+    const pct = formatPct;
+    const sel = PURPOSES.findIndex(p=>p.value===activeFilters.purpose);
+    const s = P[sel];
+    const purposes = P.map((p, i) => {
+      const on = i === sel;
+      return {
+        label: p.label,
+        on: on,
+        bg: on ? '#142026' : '#FFFFFF',
+        fg: on ? '#FFFFFF' : '#142026',
+        bd: on ? '#142026' : '#B8C3C1',
+        rate: pct(p.rate),
+        w: Math.round((p.rate / 50) * 100),
+        col: on ? '#142026' : '#8DB8C3',
+        weight: on ? 700 : 500,
+        pick: () => routeTo(current(),{purpose:p.value})
+      };
+    });
+    return {
+      noReasons:s.reasons.length===0,
+      plainReasons:!this.state.technical, reportedReasons:!!this.state.technical,
+      purposes: purposes,
+      d: {
+        headline:s.high[1]===null?'No eligible county':s.high[0]+' County, '+pct(s.high[1]),
+        high: s.high[0],
+        highRate: pct(s.high[1]),
+        answer: s.high[1]===null ? 'No county meets the minimum sample size for this selection.' : s.high[0] + ' turned down ' + fmt(s.high[2]) + ' of ' + fmt(s.high[3]) + ' ' + s.noun + ' applications in '+activeFilters.year+'. Across New Jersey it was ' + pct(s.rate) + ' (' + fmt(s.denied) + ' of ' + fmt(s.decided) + '). The lowest county was ' + s.low[0] + ', at ' + pct(s.low[1]) + '.',
+        reasons: s.reasons.map((r, i) => ({ label: this.state.technical ? r[0] : PLAIN[r[0]], share: formatPct(r[1]), w: r[1], col: i === 0 ? '#2F6E80' : '#8DB8C3' }))
+      }
+    };
+  }
+}
+return Component;
+})();
+// Additive controls: original templates remain responsible for the page design.
+function sharedScope(){const f=activeFilters,years=DATA_CONFIG.years;return {year:f.year,priorYear:f.year-1,firstYear:years[0],lastYear:years.at(-1),purposeLower:purposeLabel(f.purpose).toLowerCase(),minSample:f.minSample,tolerance:f.tolerance,sourceNote:sourceNote(),denialDefinition:DENIAL_RATE_DEFINITION,asOf:`As of ${vintageFor(f.year)} · ${f.year} data.`,dataBadge:DATA_CONFIG.mode==='demo'?'Demo data':`HMDA ${years[0]}–${years.at(-1)} · data as of ${vintageFor(f.year)}`,startDataNote:DATA_CONFIG.mode==='demo'?sourceNote():'',filterSummary:`${f.year} · ${purposeLabel(f.purpose)} · ${f.minSample}+ loans per county or lender`,changesDescription:`Four things that stand out in New Jersey’s ${purposeLabel(f.purpose).toLowerCase()} numbers. Changes compares ${years[0]}–${years.at(-1)}; ${f.year} is highlighted in the charts.`};}
+function escapeText(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function trendChart(series,keys,colors){const max=Math.max(1,...series.flatMap(r=>keys.map(k=>r[k]||0))),width=480/series.length;return `<svg viewBox="0 0 480 160" role="img" aria-label="${escapeText(keys.join(' and '))} by year" style="width:100%;height:auto;display:block">${series.map((r,i)=>`${keys.map((key,j)=>{const h=90*(r[key]||0)/max,x=i*width+12+j*(width-24)/keys.length;return `<rect x="${x}" y="${118-h}" width="${(width-28)/keys.length}" height="${h}" fill="${colors[j]}" ${r.year===activeFilters.year?'stroke="#142026" stroke-width="2"':''}></rect><text x="${x}" y="${112-h}" font-size="11" fill="#142026">${formatNum(r[key])}</text>`;}).join('')}<text x="${i*width+width/2}" y="145" text-anchor="middle" font-size="13" fill="#56636B">${r.year}</text>`).join('')}</svg>`;}
+function dotChart(rows){const good=rows.filter(r=>Number.isFinite(r.change)),min=Math.min(0,...good.map(r=>r.change)),max=Math.max(1,...good.map(r=>r.change)),placed=[];
+ const dots=good.map(r=>{const x=30+420*(r.change-min)/(max-min),y=Array.from({length:good.length+1},(_,i)=>65+18*i).find(y=>placed.every(p=>Math.hypot(x-p.x,y-p.y)>=17));placed.push({x,y});return {r,x,y};}),axis=Math.max(194,...placed.map(p=>p.y+22)),height=axis+36;
+ return `<svg viewBox="0 0 480 ${height}" role="img" aria-label="County changes across the configured years; Cape May is highlighted" style="width:100%;height:auto;display:block"><line x1="30" y1="${axis}" x2="450" y2="${axis}" stroke="#D9DFDD"></line>${dots.map(({r,x,y})=>`<circle cx="${x}" cy="${y}" r="7" fill="${r.name==='Cape May'?'#E8A23A':'#5B95A5'}" stroke="${r.name==='Cape May'?'#142026':'white'}"><title>${r.name}: ${formatPct(r.change)}</title></circle>${r.name==='Cape May'?`<text x="${x}" y="${y-13}" text-anchor="middle" font-size="13" fill="#142026">Cape May</text>`:''}`).join('')}<text x="30" y="${axis+22}" font-size="13">${formatPct(min)}</text><text x="450" y="${axis+22}" text-anchor="end" font-size="13">${formatPct(max)}</text></svg>`;
+}
+let chartMarkup={};
+function changeStories(d){chartMarkup={applications:trendChart(d.series,['applications'],['#8DB8C3']),loans:trendChart(d.series,['loans'],['#2F6E80']),counties:dotChart(d.countyChanges),merger:d.lenderGroup?trendChart(d.merger,['predecessor','successor'],['#BCD6DC','#2F6E80']):'<p>No predecessor/successor group is available in these records.</p>'};const p=purposeLabel(activeFilters.purpose),range=d.first+' to '+d.last,first=d.series[0],last=d.series.at(-1),group=d.merger.at(-1);return [
+ {eyebrow:p+' applications, '+range,number:formatPct(d.applicationChange),title:'How application activity changed.',text:`Applications moved from ${formatNum(first.applications)} to ${formatNum(last.applications)} across the configured years. Preapprovals are excluded.`,chart:'applications'},
+ {eyebrow:'Loans made, '+range,number:formatPct(d.loanChange),title:'The longer lending trend.',text:`Lenders originated ${formatNum(last.loans)} loans in ${d.last}, compared with ${formatNum(first.loans)} in ${d.first}.`,chart:'loans'},
+ {eyebrow:'Cape May, '+range,number:formatPct(d.capeMay.change),title:'Cape May against the other counties.',text:`Originations moved from ${formatNum(d.capeMay.prior)} to ${formatNum(d.capeMay.current)}. Only counties meeting the minimum sample in both years appear in the distribution.`,chart:'counties'},
+ {eyebrow:d.predecessorName+' / '+d.successorName,number:d.lenderGroup?formatNum(group?.total):'Not available',title:'Follow the lender group through a merger.',text:!d.lenderGroup?'A linked predecessor and successor are needed for this comparison.':`${d.predecessorName} and ${d.successorName} roll up to one lender group. Combined originations in ${d.last}: ${formatNum(group?.total)}. ${d.predecessorName} is light blue; ${d.successorName} is dark blue.`,chart:'merger'}];}
+function refreshScreenTools(){document.getElementById('aboutSource').textContent=sourceNote()+' '+sharedScope().asOf;document.getElementById('aboutDefinition').textContent=DENIAL_RATE_DEFINITION;root.querySelectorAll('[data-chart]').forEach(el=>el.innerHTML=chartMarkup[el.dataset.chart]||'');}
+function option(value,label,currentValue){return `<option value="${escapeText(value)}" ${String(value)===String(currentValue)?'selected':''}>${escapeText(label)}</option>`;}
+function openFilters(){const f=activeFilters;document.getElementById('globalFilters').innerHTML=`<label>Year<select name="year">${DATA_CONFIG.years.map(y=>option(y,y,f.year)).join('')}</select></label><label>Loan purpose<select name="purpose">${PURPOSES.map(p=>option(p.value,p.label,f.purpose)).join('')}</select></label><label>Minimum sample size<input type="number" name="minimum" min="1" max="10000" step="1" required value="${f.minSample}"></label>${current()==='loan'?`<label>Amount tolerance<select name="tolerance">${[5,10,15,20].map(t=>option(t,'±'+t+'%',f.tolerance)).join('')}</select></label>`:''}<button class="settings-button" type="submit">Apply</button>`;document.getElementById('filterDialog').showModal();}
+document.addEventListener('click',e=>{const link=e.target.closest('a[href^="#"]');if(link&&!link.dataset.screenAction&&SCREENS[link.hash.slice(1).split('?')[0]]){e.preventDefault();routeTo(link.hash.slice(1).split('?')[0]);return;}const action=e.target.closest('[data-screen-action]');if(action){e.preventDefault();const kind=action.dataset.screenAction;if(kind==='filters')openFilters();if(kind==='download'){document.getElementById('downloadStatus').textContent='';document.getElementById('screenSettings').showModal();}if(kind==='about')document.getElementById('aboutData').showModal();if(kind==='other'){instances.loan.setState({custom:true});document.getElementById('customLoanAmount')?.focus();}}const closer=e.target.closest('[data-close-dialog]');if(closer)document.getElementById(closer.dataset.closeDialog).close();const reason=e.target.closest('[data-reason-label]');if(reason)instances.denials.setState({technical:reason.dataset.reasonLabel==='reported'});});
+document.addEventListener('submit',e=>{if(e.target.id==='customLoanForm'){e.preventDefault();if(e.target.reportValidity())instances.loan.setState({amt:String(Number(document.getElementById('customLoanAmount').value)),custom:true});}if(e.target.id==='globalFilters'){e.preventDefault();if(!e.target.reportValidity())return;const d=new FormData(e.target);document.getElementById('filterDialog').close();routeTo(current(),{year:Number(d.get('year')),purpose:d.get('purpose'),minSample:Number(d.get('minimum')),tolerance:d.has('tolerance')?Number(d.get('tolerance')):activeFilters.tolerance});}});
+for(const id of ['screenSettings','aboutData','filterDialog']){const dialog=document.getElementById(id);dialog.addEventListener('click',e=>{if(e.target===dialog){const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)dialog.close();}});}
+window.addEventListener('hashchange',()=>['screenSettings','aboutData','filterDialog'].forEach(id=>document.getElementById(id).close()));
+function screenExport(){const key=current(),inst=instances[key],values=inst.renderVals();const base={screen:key,dataMode:DATA_CONFIG.mode,sourceLabel:DATA_CONFIG.sourceLabel,vintageLabel:vintageFor(activeFilters.year),activeFilters:{...activeFilters},denialRateDefinition:DENIAL_RATE_DEFINITION,valuesShown:{contentText:root.querySelector('main')?.innerText||'',...JSON.parse(JSON.stringify(values,(k,v)=>typeof v==='function'?undefined:v))}};if(key==='loan')return {...base,loanMatches:inst.lastResult};if(key==='map')return {...base,countyMetrics:DataAdapter.getCountyMetrics(activeFilters)};if(key==='denials')return {...base,denialStats:DataAdapter.getDenialStats(activeFilters)};if(key==='changes')return {...base,changes:DataAdapter.getChanges(activeFilters)};return base;}
+
+document.addEventListener('click',e=>{const b=e.target.closest('[data-download]');if(!b)return;const data=screenExport(),format=b.dataset.download;let content;
+ if(format==='json')content=JSON.stringify(data,(k,v)=>typeof v==='function'?undefined:v,2);
+ else {const rows=[['field','value']];const walk=(v,path)=>{if(typeof v==='function')return;if(v!==null&&typeof v==='object')Object.entries(v).forEach(([k,x])=>walk(x,path?path+'.'+k:k));else rows.push([path,v??'']);};walk(data,'');content='\ufeff'+rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\r\n');}
+ const url=URL.createObjectURL(new Blob([content],{type:format==='json'?'application/json':'text/csv;charset=utf-8'})),a=document.createElement('a');a.href=url;a.download='mortgage-screens-'+current()+'-'+DATA_CONFIG.mode.toUpperCase()+'.'+format;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);document.getElementById('downloadStatus').textContent='Downloaded '+format.toUpperCase()+' details.';
+});
+
+root = document.getElementById('app');
+window.addEventListener('hashchange', function () { render(); window.scrollTo(0, 0); });
+render();
+</script>
+</body>
+</html>
